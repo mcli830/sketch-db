@@ -9,7 +9,7 @@ const Button = styled.button.attrs(props => ({
 }))`
   background-color: transparent;
   padding: 0.5em 1em;
-  border-radius: 8px;
+  border-radius: 6px;
   color: ${({color}) => color};
   border: ${({ border, color }) => {
     return border > 0 ? `${border}px solid ${color}` : 'none';
