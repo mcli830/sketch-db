@@ -8,36 +8,49 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
+import styled from 'styled-components'
 
-import Container from '../common/Container'
 import "./reset.css"
 
-const DefaultLayout = ({ children }) => {
+const FluidContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`
+const Content = styled.main`
+  flex: 1 1 auto;
+`
+const Footer = styled.footer`
+  flex: 0 0 auto;
+`
+
+const BaseLayout = ({ children }) => {
   const { site } = useStaticQuery(graphql`
     query {
       site {
         siteMetadata {
           title
           author
+          authorPage
         }
       }
     }
   `)
 
   return (
-    <Container fill='window'>
-      <main>{children}</main>
-      <footer>
+    <FluidContainer>
+      <Content>{children}</Content>
+      <Footer>
         © {new Date().getFullYear()}, Built by
         {` `}
         <a href={site.siteMetadata.authorPage}>{site.siteMetadata.author}</a>
-      </footer>
-    </Container>
+      </Footer>
+    </FluidContainer>
   )
 }
 
-DefaultLayout.propTypes = {
+BaseLayout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default DefaultLayout
+export default BaseLayout

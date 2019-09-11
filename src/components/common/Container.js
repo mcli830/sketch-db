@@ -1,29 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+const FluidContainer = styled.div`
+  margin: auto;
+  max-width: 600px;
+  min-height: ${({ fill }) => {
+    return fill === 'parent' ? '100%' : fill === 'window' ? '100vh' : null;
+  }};
+`
 
 const Container = ({ children, className, style, fill }) => (
-  <div
+  <FluidContainer
     className={className}
-    style={{
-      margin: 'auto',
-      maxWidth: 600,
-      minHeight: fillValue(fill),
-      ...style
-    }}
+    style={style}
   >
     {children}
-  </div>
+  </FluidContainer>
 )
-
-function fillValue(fill){
-  switch(fill) {
-    case 'parent': return '100%';
-    case 'window': return '100vh';
-    case 'none':
-    default:
-      return null;
-  }
-}
 
 Container.propTypes = {
   children: PropTypes.node,
