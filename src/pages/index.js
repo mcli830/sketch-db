@@ -1,9 +1,11 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 
 import Layout from "../components/layouts/BaseLayout"
 import SEO from "../components/meta/SEO"
 import Container from '../components/common/Container'
+import Link from '../components/common/Link'
+import Button from '../components/common/Button'
 
 const IndexPage = () => {
   const { site } = useStaticQuery(graphql`
@@ -20,10 +22,14 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Home" />
-      <Container>
-        <h1>{site.siteMetadata.title}</h1>
+      <Container fill='parent' style={{
+        textAlign: 'center'
+      }}>
+        <h1>{site.siteMetadata.title.toLowerCase()}</h1>
         <p>{site.siteMetadata.description}</p>
-        <Link to="/app">Launch</Link>
+        <Link to="/app">
+          <Button>Launch</Button>
+        </Link>
       </Container>
     </Layout>
   );

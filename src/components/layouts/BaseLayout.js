@@ -21,6 +21,7 @@ const Content = styled.main`
   flex: 1 1 auto;
 `
 const Footer = styled.footer`
+  text-align: center;
   flex: 0 0 auto;
 `
 
