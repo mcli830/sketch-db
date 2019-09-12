@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { black, white } from '../../vars/theme'
+import { BLACK, WHITE } from '../../vars/theme'
 
 const heightScale = 7;
 
@@ -23,7 +23,7 @@ const Content = styled.div`
   margin-bottom: ${heightScale*2}vh;
   margin-left: 20%;
   & > * {
-    color: ${white};
+    color: ${WHITE};
     margin-bottom: 0.5em;
   }
 `
@@ -42,7 +42,7 @@ Banner.propTypes = {
 }
 
 Banner.defaultProps = {
-  background: black,
+  background: BLACK,
 }
 
 export default Banner;

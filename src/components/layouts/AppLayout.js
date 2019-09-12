@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { black, white } from '../../vars/theme'
+import { BLACK, WHITE } from '../../vars/theme'
 
 const Container = styled.div`
-  background: ${black};
+  background: ${BLACK};
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   & * {
-    color: ${white};
+    color: ${WHITE};
   }
 `
 

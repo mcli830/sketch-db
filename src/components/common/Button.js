@@ -1,8 +1,7 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { white, primary } from '../../vars/theme'
+import { WHITE, PRIMARY } from '../../vars/theme'
 
 const Button = styled.button.attrs(props => ({
   onClick: props.onClick
@@ -16,7 +15,7 @@ const Button = styled.button.attrs(props => ({
   }};
   cursor: pointer;
   &:hover {
-    color: ${white};
+    color: ${WHITE};
     background-color: ${({color}) => color}
   }
   &:focus,
@@ -32,7 +31,7 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-  color: primary,
+  color: PRIMARY,
   border: 2,
 }
 

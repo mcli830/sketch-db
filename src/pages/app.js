@@ -1,17 +1,68 @@
 import React from 'react'
+import { Provider } from 'react-redux'
 import styled from 'styled-components'
-import { black } from '../vars/theme'
+import { lighten } from 'polished'
+// components
+import AppLayout from '../components/layouts/AppLayout'
+import TabContainer from '../components/app/TabContainer'
+import ControlPanel from '../components/app/ControlPanel'
+import Workspace from '../components/app/Workspace'
+import Fluid from '../components/common/Fluid'
+// store
+import createStore from '../state/createStore'
+// constants
+import { BLACK } from '../vars/theme'
+import { TAB_HEIGHT, CONTROL_WIDTH } from '../vars/ui'
 
-import Layout from '../components/layouts/AppLayout'
+const store = createStore();
 
-class App extends React.Component {
-  render() {
-    return (
-      <Layout>
-        <h1>App</h1>
-      </Layout>
-    )
-  }
-}
+const FlexContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+`
+const TabWrapper = styled.div`
+  flex: 0 0 ${TAB_HEIGHT}px;
+  width: 100%;
+`
+const Interface = styled.div`
+  flex: 1 1 auto;
+  width: 100%;
+  border-bottom: 1px solid ${lighten(0.2, BLACK)};
+  position: relative;
+`
+const ControlPanelWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  width: auto;
+  z-index: 2;
+`
+const WorkspaceWrapper = styled(Fluid)`
+  position: relative;
+  z-index: 1;
+`
+
+const App = (props) => (
+  <Provider store={store}>
+    <AppLayout>
+      <FlexContainer>
+        <TabWrapper>
+          <TabContainer data='Hello data' />
+        </TabWrapper>
+        <Interface>
+          <WorkspaceWrapper>
+            <Workspace />
+          </WorkspaceWrapper>
+          <ControlPanelWrapper>
+            <ControlPanel />
+          </ControlPanelWrapper>
+        </Interface>
+      </FlexContainer>
+    </AppLayout>
+  </Provider>
+)
 
 export default App;
