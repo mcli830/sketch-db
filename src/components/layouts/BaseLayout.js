@@ -16,6 +16,7 @@ const FluidContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-bottom: 1em;
 `
 const Content = styled.main`
   flex: 1 1 auto;
@@ -23,6 +24,7 @@ const Content = styled.main`
 const Footer = styled.footer`
   text-align: center;
   flex: 0 0 auto;
+  opacity: 0.7;
 `
 
 const BaseLayout = ({ children }) => {

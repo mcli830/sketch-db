@@ -9,19 +9,11 @@ import Link from '../components/common/Link'
 import Button from '../components/common/Button'
 import Banner from '../components/home/Banner'
 
-const Header = styled.h1`
-  color: white;
-`
-
 const Content = styled(Container).attrs(props => ({
   fill: 'parent'
 }))`
   text-align: center;
   padding: 2em 0;
-`
-
-const Text = styled.p`
-  margin-bottom: 2em;
 `
 
 const IndexPage = () => {
@@ -39,11 +31,12 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Home" />
-      <Banner>
-        <Header>{site.siteMetadata.title.toLowerCase()}</Header>
-      </Banner>
+      <Banner
+        background='https://source.unsplash.com/Kj2SaNHG-hg/600x300'
+        title={site.siteMetadata.title.toLowerCase()}
+        subtitle={site.siteMetadata.description}
+      />
       <Content>
-        <Text>{site.siteMetadata.description}</Text>
         <Link to="/app">
           <Button>Launch</Button>
         </Link>

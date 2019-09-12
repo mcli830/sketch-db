@@ -3,44 +3,46 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { black } from '../../vars/theme'
 
-const Banner = styled.div`
-  background: ${({background}) => background};
+const heightScale = 7;
+
+const Background = styled.div`
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('${({background}) => background}');
+  background-position: center;
+  background-size: cover;
   height: 500px;
+  min-height: ${heightScale*10}vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
 `
+const Content = styled.div`
+  margin-bottom: ${heightScale*2}vh;
+  margin-left: 20%;
+  & > * {
+    color: white;
+    margin-bottom: 0.5em;
+  }
+`
+
+const Banner = ({title, subtitle, background}) => (
+  <Background background={background}>
+    <Content>
+      <h1>{title}</h1>
+      <subtitle>{subtitle}</subtitle>
+    </Content>
+  </Background>
+)
 
 Banner.propTypes = {
   background: PropTypes.string,
 }
 
 Banner.defaultProps = {
-  background: `repeating-linear-gradient(
-      70deg,
-      transparent, transparent 159px,
-      #717171 159px, #717171 160px
-    ), repeating-linear-gradient(
-      transparent, transparent 159px,
-      #717171 159px, #717171 160px
-    ), repeating-linear-gradient(
-      70deg,
-      transparent, transparent 79px,
-      #5c5c5c 79px, #5c5c5c 80px
-    ), repeating-linear-gradient(
-      transparent, transparent 79px,
-      #5c5c5c 79px, #5c5c5c 80px
-    ), repeating-linear-gradient(
-      70deg,
-      transparent, transparent 15px,
-      #484848 15px, #484848 16px
-    ), repeating-linear-gradient(
-      transparent, transparent 15px,
-      #484848 15px, #484848 16px
-    ), ${black}; }
-  `
+  background: black,
 }
 
 export default Banner;
