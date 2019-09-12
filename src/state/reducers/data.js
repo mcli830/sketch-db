@@ -1,6 +1,6 @@
 export default function(state = {
-  "Workspace": {
-    viewBox: { x: 0, y: 0 },
+  "Workspace 1": {
+    viewBox: null,
     nodes: []
   }
 }, action){
