@@ -1,11 +1,15 @@
 import React from 'react'
+import styled from 'styled-components'
+import { black } from '../vars/theme'
+
+import Layout from '../components/layouts/AppLayout'
 
 class App extends React.Component {
   render() {
     return (
-      <div>
-      App
-      </div>
+      <Layout>
+        <h1>App</h1>
+      </Layout>
     )
   }
 }
