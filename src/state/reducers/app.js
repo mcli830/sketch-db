@@ -2,7 +2,7 @@ import { CHANGE_MODE, changeMode } from '../actions/app/changeMode'
 import { MOVE_MOUSE, moveMouse } from '../actions/app/moveMouse'
 
 export default function(state = {
-  mode: null,
+  mode: 'view',
   mouse: {
     coords: { x: 0, y: 0 }
   }
