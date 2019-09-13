@@ -8,10 +8,12 @@ import TabContainer from '../components/app/TabContainer'
 import ControlPanel from '../components/app/ControlPanel'
 import Workspace from '../components/app/Workspace'
 import Fluid from '../components/common/Fluid'
+// styles
+import '../styles/fontawesome/css/all.css'
 // store
 import createStore from '../state/createStore'
 // constants
-import { BLACK } from '../vars/theme'
+import { UNIT, BLACK } from '../vars/theme'
 import { TAB_HEIGHT, CONTROL_WIDTH } from '../vars/ui'
 
 const store = createStore();
@@ -34,8 +36,8 @@ const Interface = styled.div`
 `
 const ControlPanelWrapper = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: ${UNIT}px;
+  left: ${UNIT}px;
   height: auto;
   width: auto;
   z-index: 2;

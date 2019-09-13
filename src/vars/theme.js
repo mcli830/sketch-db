@@ -6,11 +6,13 @@ export const FONT = 'sans-serif'
 export const FONT_SIZE = UNIT * 2
 
 export const BLACK = '#212121'
-export const BLACK_SOFT = lighten(0.2, BLACK)
 export const BLACK_HARD = darken(0.2, BLACK)
+export const BLACK_SOFT = lighten(0.2, BLACK)
+export const BLACK_DIM = lighten(0.4, BLACK)
 export const WHITE = '#f0f0f0'
-export const WHITE_SOFT = darken(0.2, WHITE)
 export const WHITE_HARD = lighten(0.2, WHITE)
+export const WHITE_SOFT = darken(0.2, WHITE)
+export const WHITE_DIM = darken(0.4, WHITE)
 export const PRIMARY = '#03a9f4'
 export const SECONDARY = '#ffb74d'
 
@@ -50,8 +52,6 @@ const grid = {
     lg: lighten(0.15, BLACK),
   }
 }
-
-console.log(grid)
 
 export const WORKSPACE_GRID = `
   repeating-linear-gradient(90deg,
