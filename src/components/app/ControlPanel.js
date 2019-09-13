@@ -18,8 +18,9 @@ const Container = styled(Fluid)`
   height: auto;
   min-width: ${CONTROL_WIDTH}px;
   min-height: ${CONTROL_WIDTH}px;
-  transition: width ${TRANSITION.speed[1]} ${TRANSITION.curve.quint};
+  transition: width ${TRANSITION.speed[1]} ${TRANSITION.curve.quart};
   &:hover {
+    transition-delay: 600ms;
     width: ${CONTROL_WIDTH_FULL}px;
   }
 `

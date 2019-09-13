@@ -31,6 +31,7 @@ export const TRANSITION = {
     5: '1s',
   },
   curve: {
+    quart: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
     quint: 'cubic-bezier(0.23, 1, 0.32, 1)',
     bounce: 'cubic-bezier(.21,1.11,.6,1.15)',
   }
