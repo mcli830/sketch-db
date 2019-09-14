@@ -1,8 +1,12 @@
-import { CHANGE_MODE, changeMode } from '../actions/app/changeMode'
-import { MOVE_MOUSE, moveMouse } from '../actions/app/moveMouse'
+import {
+  CHANGE_MODE, changeMode,
+  MOVE_MOUSE, moveMouse,
+} from '../actions/app'
+import { START_MODE } from '../../vars/ui'
 
 export default function(state = {
-  mode: 'view',
+  workingspace: 0,
+  mode: START_MODE,
   mouse: {
     coords: { x: 0, y: 0 }
   }

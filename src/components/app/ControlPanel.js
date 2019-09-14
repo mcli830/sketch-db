@@ -5,7 +5,7 @@ import { lighten } from 'polished'
 // components
 import Fluid from '../common/Fluid'
 // actions
-import changeMode from '../../state/actions/app/changeMode'
+import { changeMode } from '../../state/actions/app'
 // constants
 import { UNIT, BLACK, WHITE_SOFT, WHITE_DIM, BLACK_SOFT, PRIMARY, BOX_SHADOW, TRANSITION } from '../../vars/theme'
 import { CONTROL_WIDTH, CONTROL_WIDTH_FULL } from '../../vars/ui'
@@ -75,19 +75,19 @@ const Label = styled.p`
 const ControlPanel = ({ mode, changeMode }) => {
   // list data dependent on props
   const controls = [
-    { label: 'View',
-      mode: 'view',
+    { label: 'Navigate',
+      mode: 'nav',
       icon: 'fas fa-arrows-alt',
-      active: mode==='view',
+      active: mode==='nav',
       disabled: false,
     },
-    { label: 'Add Table',
-      mode: 'add',
+    { label: 'Create Table',
+      mode: 'create',
       icon: 'fas fa-plus',
-      active: mode==='add',
+      active: mode==='create',
       disabled: false,
     },
-    { label: 'Remove Table',
+    { label: 'Delete Table',
       mode: 'delete',
       icon: 'fas fa-trash',
       active: mode==='delete',
@@ -98,8 +98,9 @@ const ControlPanel = ({ mode, changeMode }) => {
   return (
     <Container>
       <List>
-        {controls.map(c => (
+        {controls.map((c,i) => (
           <ListItem
+            key={i}
             active={c.active}
             disabled={c.disabled}
             onClick={()=>changeMode(c.mode)}

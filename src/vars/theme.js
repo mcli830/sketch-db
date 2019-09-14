@@ -5,6 +5,11 @@ export const UNIT = 8
 export const FONT = 'sans-serif'
 export const FONT_SIZE = UNIT * 2
 
+export const TEXT_PADDING = {
+  x: UNIT*1.5,
+  y: UNIT,
+}
+
 export const BLACK = '#212121'
 export const BLACK_HARD = darken(0.2, BLACK)
 export const BLACK_SOFT = lighten(0.2, BLACK)
@@ -37,58 +42,10 @@ export const TRANSITION = {
   }
 }
 
-// WORKSPACE_GRID
-const gridLine = 1
-const gridUnit = 16
-const gridSpace = gridUnit - gridLine
-const grid = {
-  space: {
-    sm: gridSpace,
-    md: 5*gridUnit - gridLine,
-    lg: 10*gridUnit - gridLine,
-  },
-  color: {
-    sm: lighten(0.05, BLACK),
-    md: lighten(0.1, BLACK),
-    lg: lighten(0.15, BLACK),
-  }
+export const GRID_PATTERN = {
+  stroke: 1,
+  bg: BLACK,
+  sm: lighten(0.05, BLACK),
+  md: lighten(0.1, BLACK),
+  lg: lighten(0.15, BLACK),
 }
-
-export const WORKSPACE_GRID = `
-  repeating-linear-gradient(90deg,
-    transparent,
-    transparent ${grid.space.lg}px,
-    ${grid.color.lg} ${grid.space.lg}px,
-    ${grid.color.lg} ${grid.space.lg + gridLine}px
-  ),
-  repeating-linear-gradient(
-    transparent,
-    transparent ${grid.space.lg}px,
-    ${grid.color.lg} ${grid.space.lg}px,
-    ${grid.color.lg} ${grid.space.lg + gridLine}px
-  ),
-  repeating-linear-gradient(90deg,
-    transparent,
-    transparent ${grid.space.md}px,
-    ${grid.color.md} ${grid.space.md}px,
-    ${grid.color.md} ${grid.space.md + gridLine}px
-  ),
-  repeating-linear-gradient(
-    transparent,
-    transparent ${grid.space.md}px,
-    ${grid.color.md} ${grid.space.md}px,
-    ${grid.color.md} ${grid.space.md + gridLine}px
-  ),
-  repeating-linear-gradient(90deg,
-    transparent,
-    transparent ${grid.space.sm}px,
-    ${grid.color.sm} ${grid.space.sm}px,
-    ${grid.color.sm} ${gridUnit}px
-  ),
-  repeating-linear-gradient(
-    transparent,
-    transparent ${grid.space.sm}px,
-    ${grid.color.sm} ${grid.space.sm}px,
-    ${grid.color.sm} ${gridUnit}px
-  );
-`

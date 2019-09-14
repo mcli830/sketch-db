@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { BLACK, WHITE } from '../../vars/theme'
+import './removeScrollbars.css'
 
 const Container = styled.div`
   background: ${BLACK};
