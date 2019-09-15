@@ -11,12 +11,11 @@ const Line = styled.line`
   stroke: ${({color})=>color};
 `
 
-const GridPattern = ({size}) => (
-  <pattern id='svg-pattern-grid' x='0' y='0' width={size*10+1} height={size*10+1} patternUnits='userSpaceOnUse'>
+const GridPattern = ({id, size}) => (
+  <pattern id={id} x='0' y='0' width={size*10+1} height={size*10+1} patternUnits='userSpaceOnUse'>
     {Array.from(Array(10)).map((x,i) => {
       const n = i+1;
       const color = n === 10 ? g.lg : n === 5 ? g.md : g.sm;
-      console.log(color)
       return (
         <React.Fragment key={i}>
           <Line x1={size*n} x2={size*n} y1='0' y2={size*10} color={color} />
@@ -28,11 +27,12 @@ const GridPattern = ({size}) => (
 )
 
 GridPattern.propTypes = {
+  id: PropTypes.string.isRequired,
   size: PropTypes.number
 }
 
 GridPattern.defaultProps = {
-  size: 10
+  size: 10,
 }
 
 export default GridPattern

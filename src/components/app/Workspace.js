@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 // components
 import Fluid from '../common/Fluid'
-import GridPattern from './GridPattern'
+import GridPattern from '../svg/GridPattern'
+import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
 // actions
@@ -12,6 +13,9 @@ import { createTable } from '../../state/actions/data'
 // constants
 import { TEXT_PADDING, GRID_PATTERN } from '../../vars/theme'
 import { TABLE_DIM } from '../../vars/ui'
+
+const idGridPattern = 'svg-grid-pattern'
+const idDropShadow = 'svg-drop-shadow'
 
 const SvgWrapper = styled(Fluid)`
   overflow: hidden;
@@ -71,7 +75,6 @@ class Workspace extends React.Component {
     }
   }
   componentDidUpdate(prevProps, prevState){
-    console.log(this.svgRef.current)
     // manage key listeners
     if (!prevState.creating && this.state.creating){
       window.addEventListener('keydown', this.creatingTableListener);
@@ -111,20 +114,13 @@ class Workspace extends React.Component {
   // handlers
   handleCreating(e){
     e.preventDefault();
-    // set overflow bounds
-    const buffer = TABLE_DIM.width + TEXT_PADDING.x;
-    const bounds = {
-      x: this.svgRef.current.offsetWidth - buffer,
-      y: this.svgRef.current.offsetHeight - buffer,
-    }
-
     this.setState({
       creating: true,
       mouse: {
         ...this.state.mouse,
         coords: {
-          x: e.clientX > bounds.x ? bounds.x : e.clientX,
-          y: e.clientY > bounds.y ? bounds.y : e.clientY,
+          x: e.clientX,
+          y: e.clientY,
         }
       }
     });
@@ -154,9 +150,9 @@ class Workspace extends React.Component {
             onClick={this.generateOnClickFunc()}
           >
             <defs>
-              <GridPattern size={12} />
+              <GridPattern size={12} id={idGridPattern} />
             </defs>
-            <Bg pattern={'svg-pattern-grid'} />
+            <Bg pattern={idGridPattern} />
             {workspace.tables.map((t,i) => (
               <Table
                 key={i}
