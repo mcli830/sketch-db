@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const DropShadow = ({id, dx, dy, stDeviation, color, opacity }) => (
+const DropShadow = ({id, dx, dy, stdDeviation, color, opacity }) => (
   <filter id={id}>
-    <feDropShadow in='SourceGraphic' dx={dx} dy={dy} stdDeviation={stdDeviation} flood-color={color} flood-opacity={opacity} />
+    <feDropShadow in='SourceGraphic' dx={dx} dy={dy} stdDeviation={stdDeviation} floodColor={color} floodOpacity={opacity} />
   </filter>
 )
 
@@ -20,7 +20,7 @@ DropShadow.defaultProps = {
   dx: 4,
   dy: 4,
   stdDeviation: 6,
-  color: '#444',
+  color: '#222',
   opacity: 0.8,
 }
 

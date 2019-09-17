@@ -40,17 +40,14 @@ const FloatingInput = ({x, y, on, label, type, onSubmit, onCancel}) => {
   }, [on])
 
   return (
-    <Modal on={on} color={BLACK} onExit={onCancel}>
-      <Floating
-        x={x}
-        y={y}
-        on={on}
-      >
+    <Modal on={on} color={BLACK}>
+      <Floating x={x} y={y} on={on}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             ref={inputRef}
             type={type}
             placeholder={label}
+            onBlur={onCancel}
           />
         </form>
       </Floating>

@@ -23,16 +23,10 @@ const Content = styled(Fluid)`
   z-index: 2;
 `
 
-const Modal = ({ on, color, children, onExit }) => (
-  <Root on={on} onClick={e => e.stopPropagation()}>
-    <Underlay
-      color={color}
-      onClick={e => {
-        console.log('underlay click')
-        onExit();
-      }}
-    />
-      <Content>{children}</Content>
+const Modal = ({ on, color, children }) => (
+  <Root on={on}>
+    <Underlay color={color} />
+    <Content>{children}</Content>
   </Root>
 )
 

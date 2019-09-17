@@ -151,6 +151,7 @@ class Workspace extends React.Component {
           >
             <defs>
               <GridPattern size={12} id={idGridPattern} />
+              <DropShadow id={idDropShadow} />
             </defs>
             <Bg pattern={idGridPattern} />
             {workspace.tables.map((t,i) => (
@@ -159,6 +160,7 @@ class Workspace extends React.Component {
                 coords={t.coords}
                 name={t.name}
                 fields={t.fields}
+                filter={idDropShadow}
               />
             ))}
           </Svg>
@@ -167,7 +169,7 @@ class Workspace extends React.Component {
           x={this.state.mouse.coords.x}
           y={this.state.mouse.coords.y}
           on={this.state.creating}
-          label='New Table Name'
+          label='New Table'
           onSubmit={this.handleCreateTable}
           onCancel={this.cancelCreating}
         />
