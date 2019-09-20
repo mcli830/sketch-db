@@ -8,7 +8,7 @@ import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
 // actions
-import { changeMode } from '../../state/actions/app'
+import { changeMode, creatingTable } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
 // constants
 import { TEXT_PADDING, GRID_PATTERN } from '../../vars/theme'
@@ -32,6 +32,7 @@ const Svg = styled.svg.attrs(props => ({
   cursor: ${({mode}) => {
     switch(mode){
       case 'nav': return 'grab';
+      case 'moving': return 'grabbing';
       case 'create': return 'cell';
       case 'delete': return 'crosshair';
       default: return 'auto';
@@ -52,18 +53,10 @@ class Workspace extends React.Component {
 
   constructor(props){
     super(props)
-    // local state
-    this.state = {
-      creating: false,
-      mouse: {
-        coords: this.props.app.mouse.coords
-      }
-    }
     // refs
     this.svgRef = React.createRef();
     // bindings
-    this.cancelCreating = this.cancelCreating.bind(this)
-    this.creatingTableListener = this.creatingTableListener.bind(this)
+    this.globalKeypress = this.globalKeypress.bind(this)
     this.handleNav = this.handleNav.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
@@ -75,41 +68,33 @@ class Workspace extends React.Component {
     window.addEventListener('click', ()=>{
       console.log('GLOBAL SVG CLICK')
     })
-    // key listener for creating table
-    if (this.state.creating){
-      window.addEventListener('keydown', this.creatingTableListener);
-    }
-    console.log({
-      width: document.body.clientWidth,
-      height: document.body.clientHeight,
-    })
+    window.addEventListener('keyup', this.globalKeypress)
   }
-  componentDidUpdate(prevProps, prevState){
-    // manage key listeners
-    if (!prevState.creating && this.state.creating){
-      window.addEventListener('keydown', this.creatingTableListener);
-    } else if (prevState.creating && !this.state.creating) {
-      window.removeEventListener('keydown', this.creatingTableListener);
-    }
-    // todo: turn off floating input if not in create mode
-  }
+
   componentWillUnmount(){
     // cleanup
-    window.removeEventListener('keydown', this.creatingTableListener);
+    window.removeEventListener('keyup', this.globalKeypress)
   }
   // listeners
-  creatingTableListener(e){
+  globalKeypress(e){
     switch(e.keyCode){
       case 27:
-        return this.cancelCreating();
-      default: return null;
+        if (this.props.app.mode !== 'nav'){
+          if (this.props.app.mode === 'creating'){
+            return this.props.changeMode('create');
+          }
+          this.props.changeMode('nav')
+        }
+        break;
+      default:
     }
   }
+
   // function generators for different states
   generateOnClickFunc(){
     switch(this.props.app.mode){
       case 'create':
-        if (!this.state.creating) return this.handleCreating;
+        return this.handleCreating;
         break;
       default: return null;
     }
@@ -122,13 +107,6 @@ class Workspace extends React.Component {
       default: return null;
     }
   }
-  // setters
-  cancelCreating(){
-    return this.setState({
-      creating: false,
-    })
-  }
-
   // handlers
   handleNav(e){
     if (e.target !== e.currentTarget) return null;
@@ -137,10 +115,8 @@ class Workspace extends React.Component {
       x: e.clientX,
       y: e.clientY,
     }
-    // const svg = this
-    // const origin = viewBox.slice(0,2)
-    // const dims = viewBox.slice(2)
-    // const move = navMove.bind(this)
+    const changeMode = this.props.changeMode
+    changeMode('moving')
     window.addEventListener('mousemove', navMove)
     window.addEventListener('mouseup', navQuit)
     function navMove(e){
@@ -157,28 +133,29 @@ class Workspace extends React.Component {
       e.preventDefault();
       window.removeEventListener('mousemove', navMove)
       window.removeEventListener('mouseup', navQuit)
+      changeMode('nav')
     }
   }
   handleCreating(e){
     e.preventDefault();
-    this.setState({
-      creating: true,
-      mouse: {
-        ...this.state.mouse,
-        coords: {
-          x: e.clientX,
-          y: e.clientY,
-        }
+    this.props.creatingTable({
+      client: {
+        x: e.clientX,
+        y: e.clientY,
+      },
+      page: {
+        x: e.pageX,
+        y: e.pageY,
       }
-    });
+    })
   }
   handleCreateTable(name){
     const { app } = this.props;
     this.props.createTable(app.workingspace, name, {
-      x: this.state.mouse.coords.x - TEXT_PADDING.x,
-      y: this.state.mouse.coords.y - TABLE_DIM.name.lineHeight*0.5,
+      x: this.props.app.coords.page.x - TEXT_PADDING.x,
+      y: this.props.app.coords.page.y - TABLE_DIM.name.lineHeight*0.5,
     });
-    this.cancelCreating();
+    this.props.changeMode('create')
   }
 
   // render
@@ -212,12 +189,12 @@ class Workspace extends React.Component {
           </Svg>
         </SvgWrapper>
         <FloatingInput
-          x={this.state.mouse.coords.x}
-          y={this.state.mouse.coords.y}
-          on={this.state.creating}
+          x={this.props.app.coords.client.x}
+          y={this.props.app.coords.client.y}
+          on={this.props.app.mode === 'creating'}
           label='New Table'
           onSubmit={this.handleCreateTable}
-          onCancel={this.cancelCreating}
+          onCancel={()=>this.props.changeMode('create')}
         />
       </React.Fragment>
     );
@@ -231,6 +208,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   changeMode: (mode) => dispatch(changeMode(mode)),
+  creatingTable: (coords) => dispatch(creatingTable(coords)),
   createTable: (workspace, name, coords) => dispatch(createTable(workspace, name, coords)),
 })
 

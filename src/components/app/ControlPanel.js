@@ -47,6 +47,11 @@ const ListItem = styled.li`
   & * {
     color: ${props => props.disabled ? BLACK_SOFT : props.active ? PRIMARY : textColor};
   }
+  ${props => props.active ? `
+    & i {
+      transform: scale(1.15);
+    }
+  ` : ''}
   ${props => props.disabled ? '' : `
       &:hover,
       &:focus {
@@ -78,13 +83,13 @@ const ControlPanel = ({ mode, changeMode }) => {
     { label: 'Navigate',
       mode: 'nav',
       icon: 'fas fa-arrows-alt',
-      active: mode==='nav',
+      active: ['nav', 'moving'].includes(mode),
       disabled: false,
     },
     { label: 'Create Table',
       mode: 'create',
       icon: 'fas fa-plus',
-      active: mode==='create',
+      active: ['create', 'creating'].includes(mode),
       disabled: false,
     },
     { label: 'Delete Table',

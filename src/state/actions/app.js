@@ -6,10 +6,10 @@ export function changeMode(mode) {
   }
 }
 
-export const MOVE_MOUSE = 'MOVE_MOUSE'
-export function moveMouse(coords) {
+export const CREATING_TABLE = 'CREATING_TABLE'
+export function creatingTable(coords) {
   return {
-    type: MOVE_MOUSE,
+    type: CREATING_TABLE,
     payload: coords
   }
 }
