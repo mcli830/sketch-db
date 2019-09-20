@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 // components
 import Fluid from '../common/Fluid'
-import GridPattern from '../svg/GridPattern'
+import { GridPattern, staticGridPattern } from '../svg/GridPattern'
 import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
@@ -12,16 +12,19 @@ import { changeMode } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
 // constants
 import { TEXT_PADDING, GRID_PATTERN } from '../../vars/theme'
-import { TABLE_DIM } from '../../vars/ui'
+import { WORKSPACE_SIZE, TABLE_DIM } from '../../vars/ui'
 
 const idGridPattern = 'svg-grid-pattern'
 const idDropShadow = 'svg-drop-shadow'
+
+const gridPattern = staticGridPattern(12, true)
 
 const SvgWrapper = styled(Fluid)`
   overflow: hidden;
 `
 const Svg = styled.svg`
   background-color: ${GRID_PATTERN.bg};
+  background-image: ${gridPattern.html};
   width: 100%;
   height: 100%;
   cursor: ${({mode}) => {
@@ -36,10 +39,12 @@ const Svg = styled.svg`
 const Bg = styled.rect.attrs(({pattern}) => ({
   x: 0,
   y: 0,
-  width: '100%',
-  height: '100%',
-  fill: `url(#${pattern})`
-}))``
+  width: '500%',
+  height: '500%',
+  fill: `url(#${pattern})`,
+}))`
+  transform: translate(-50%, -50%);
+`
 
 class Workspace extends React.Component {
 
@@ -57,6 +62,7 @@ class Workspace extends React.Component {
     // bindings
     this.cancelCreating = this.cancelCreating.bind(this)
     this.creatingTableListener = this.creatingTableListener.bind(this)
+    this.handleNav = this.handleNav.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
   }
@@ -65,10 +71,8 @@ class Workspace extends React.Component {
   componentDidMount(){
     // testing
     window.addEventListener('click', ()=>{
-      console.log('GLOBAL CLICK')
+      console.log('GLOBAL SVG CLICK')
     })
-    // set svg viewBox
-
     // key listener for creating table
     if (this.state.creating){
       window.addEventListener('keydown', this.creatingTableListener);
@@ -85,9 +89,8 @@ class Workspace extends React.Component {
   }
   componentWillUnmount(){
     // cleanup
-    window.removeEventListener('keydown', this.creatingTableListener)
+    window.removeEventListener('keydown', this.creatingTableListener);
   }
-
   // listeners
   creatingTableListener(e){
     switch(e.keyCode){
@@ -96,7 +99,7 @@ class Workspace extends React.Component {
       default: return null;
     }
   }
-
+  // function generators for different states
   generateOnClickFunc(){
     switch(this.props.app.mode){
       case 'create':
@@ -105,13 +108,68 @@ class Workspace extends React.Component {
       default: return null;
     }
   }
+
+  generateOnMouseDownFunc(){
+    switch(this.props.app.mode){
+      case 'nav':
+        return this.handleNav;
+      default: return null;
+    }
+  }
+  // getters
+  get viewBox(){
+    const vb = this.svgRef.current.getAttribute('viewBox')
+    return vb ? vb.split(' ').map(str => parseInt(str, 10)) : vb;
+    // returns an array or null
+  }
   // setters
+  set viewBox(arr){
+    this.svgRef.current.setAttribute('viewBox', `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`)
+  }
+
   cancelCreating(){
     return this.setState({
       creating: false,
     })
   }
+
   // handlers
+  handleNav(e){
+    console.log({
+      current: e.currentTarget,
+      target: e.target
+    })
+    // if (e.target !== e.currentTarget) return null;
+    const coords = {
+      x: e.clientX,
+      y: e.clientY,
+    }
+    const svg = this
+    const viewBox = this.viewBox;
+    const origin = viewBox.slice(0,2)
+    const dims = viewBox.slice(2)
+    const move = navMove.bind(this)
+    window.addEventListener('mousemove', move)
+    window.addEventListener('mouseup', navQuit)
+    function navMove(e){
+      const d = {
+        x: e.clientX - coords.x,
+        y: e.clientY - coords.y,
+      }
+      coords.x = e.clientX
+      coords.y = e.clientY
+      const vb = svg.viewBox
+      this.viewBox = [
+        vb[0] - d.x,
+        vb[1] - d.y,
+        ...dims,
+      ]
+    }
+    function navQuit(){
+      window.removeEventListener('mousemove', move)
+      window.removeEventListener('mouseup', navQuit)
+    }
+  }
   handleCreating(e){
     e.preventDefault();
     this.setState({
@@ -148,6 +206,7 @@ class Workspace extends React.Component {
             ref={this.svgRef}
             mode={app.mode}
             onClick={this.generateOnClickFunc()}
+            onMouseDown={this.generateOnMouseDownFunc()}
           >
             <defs>
               <GridPattern size={12} id={idGridPattern} />
