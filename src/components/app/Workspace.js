@@ -137,9 +137,6 @@ class Workspace extends React.Component {
       x: e.clientX,
       y: e.clientY,
     }
-    console.log({
-      scrollTop: document.body.scrollTop
-    })
     // const svg = this
     // const origin = viewBox.slice(0,2)
     // const dims = viewBox.slice(2)
