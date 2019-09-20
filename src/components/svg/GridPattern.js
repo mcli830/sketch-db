@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import PropTypes from 'prop-types'
 // constants
-import { GRID_PATTERN } from '../../vars/theme'
+import { UNIT, GRID_PATTERN } from '../../vars/theme'
 
 const g = GRID_PATTERN
 
@@ -31,7 +31,7 @@ GridPattern.defaultProps = {
   size: 10,
 }
 
-const staticGridPattern = (size = 12, url = false) => {
+const staticGridPattern = (size = UNIT, url = false) => {
   const html = ReactDOMServer.renderToStaticMarkup(<GridPattern size={size} />)
   return {
     size: size*10 + 1,

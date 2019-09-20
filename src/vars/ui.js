@@ -2,7 +2,7 @@ import { UNIT } from './theme'
 
 export const START_MODE = 'nav'
 
-export const WORKSPACE_SIZE = 3000
+export const WORKSPACE_SIZE = 4000
 
 export const TAB_HEIGHT = UNIT * 4
 

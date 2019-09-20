@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 // components
 import Fluid from '../common/Fluid'
-import { GridPattern, staticGridPattern } from '../svg/GridPattern'
+import { staticGridPattern } from '../svg/GridPattern'
 import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
@@ -14,19 +14,21 @@ import { createTable } from '../../state/actions/data'
 import { TEXT_PADDING, GRID_PATTERN } from '../../vars/theme'
 import { WORKSPACE_SIZE, TABLE_DIM } from '../../vars/ui'
 
-const idGridPattern = 'svg-grid-pattern'
+// const idGridPattern = 'svg-grid-pattern'
 const idDropShadow = 'svg-drop-shadow'
 
 const gridPattern = staticGridPattern(12, true)
 
-const SvgWrapper = styled(Fluid)`
-  overflow: hidden;
+const SvgWrapper = styled.div`
+  width: ${WORKSPACE_SIZE}px;
+  height: ${WORKSPACE_SIZE}px;
 `
-const Svg = styled.svg`
+const Svg = styled.svg.attrs(props => ({
+  height: WORKSPACE_SIZE,
+  width: WORKSPACE_SIZE,
+}))`
   background-color: ${GRID_PATTERN.bg};
   background-image: ${gridPattern.html};
-  width: 100%;
-  height: 100%;
   cursor: ${({mode}) => {
     switch(mode){
       case 'nav': return 'grab';
@@ -36,15 +38,15 @@ const Svg = styled.svg`
     }
   }}
 `
-const Bg = styled.rect.attrs(({pattern}) => ({
-  x: 0,
-  y: 0,
-  width: '500%',
-  height: '500%',
-  fill: `url(#${pattern})`,
-}))`
-  transform: translate(-50%, -50%);
-`
+// const Bg = styled.rect.attrs(({pattern}) => ({
+//   x: 0,
+//   y: 0,
+//   width: '500%',
+//   height: '500%',
+//   fill: `url(#${pattern})`,
+// }))`
+//   transform: translate(-50%, -50%);
+// `
 
 class Workspace extends React.Component {
 
@@ -77,6 +79,10 @@ class Workspace extends React.Component {
     if (this.state.creating){
       window.addEventListener('keydown', this.creatingTableListener);
     }
+    console.log({
+      width: document.body.clientWidth,
+      height: document.body.clientHeight,
+    })
   }
   componentDidUpdate(prevProps, prevState){
     // manage key listeners
@@ -116,17 +122,7 @@ class Workspace extends React.Component {
       default: return null;
     }
   }
-  // getters
-  get viewBox(){
-    const vb = this.svgRef.current.getAttribute('viewBox')
-    return vb ? vb.split(' ').map(str => parseInt(str, 10)) : vb;
-    // returns an array or null
-  }
   // setters
-  set viewBox(arr){
-    this.svgRef.current.setAttribute('viewBox', `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`)
-  }
-
   cancelCreating(){
     return this.setState({
       creating: false,
@@ -135,38 +131,34 @@ class Workspace extends React.Component {
 
   // handlers
   handleNav(e){
-    console.log({
-      current: e.currentTarget,
-      target: e.target
-    })
-    // if (e.target !== e.currentTarget) return null;
+    if (e.target !== e.currentTarget) return null;
+    e.preventDefault();
     const coords = {
       x: e.clientX,
       y: e.clientY,
     }
-    const svg = this
-    const viewBox = this.viewBox;
-    const origin = viewBox.slice(0,2)
-    const dims = viewBox.slice(2)
-    const move = navMove.bind(this)
-    window.addEventListener('mousemove', move)
+    console.log({
+      scrollTop: document.body.scrollTop
+    })
+    // const svg = this
+    // const origin = viewBox.slice(0,2)
+    // const dims = viewBox.slice(2)
+    // const move = navMove.bind(this)
+    window.addEventListener('mousemove', navMove)
     window.addEventListener('mouseup', navQuit)
     function navMove(e){
+      e.preventDefault();
       const d = {
         x: e.clientX - coords.x,
         y: e.clientY - coords.y,
       }
       coords.x = e.clientX
       coords.y = e.clientY
-      const vb = svg.viewBox
-      this.viewBox = [
-        vb[0] - d.x,
-        vb[1] - d.y,
-        ...dims,
-      ]
+      window.scrollBy(-d.x, -d.y, { behavior: 'smooth'})
     }
-    function navQuit(){
-      window.removeEventListener('mousemove', move)
+    function navQuit(e){
+      e.preventDefault();
+      window.removeEventListener('mousemove', navMove)
       window.removeEventListener('mouseup', navQuit)
     }
   }
@@ -209,10 +201,8 @@ class Workspace extends React.Component {
             onMouseDown={this.generateOnMouseDownFunc()}
           >
             <defs>
-              <GridPattern size={12} id={idGridPattern} />
               <DropShadow id={idDropShadow} />
             </defs>
-            <Bg pattern={idGridPattern} />
             {workspace.tables.map((t,i) => (
               <Table
                 key={i}

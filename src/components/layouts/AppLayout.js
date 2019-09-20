@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { BLACK, WHITE } from '../../vars/theme'
-import './removeScrollbars.css'
+import { WORKSPACE_SIZE } from '../../vars/ui'
 
 const Container = styled.div`
   background: ${BLACK};
-  height: 100vh;
-  width: 100%;
+  overflow: auto;
+  width: 4000px;
   & * {
     color: ${WHITE};
   }
