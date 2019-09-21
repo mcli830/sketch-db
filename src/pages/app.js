@@ -17,11 +17,6 @@ import { TAB_HEIGHT, CONTROL_WIDTH } from '../vars/ui'
 
 const store = createStore();
 
-
-const Interface = styled.div`
-  border-bottom: 1px solid ${lighten(0.2, BLACK)};
-  position: relative;
-`
 const TabWrapper = styled.div`
   position: fixed;
   bottom: 0;
@@ -46,19 +41,17 @@ const WorkspaceWrapper = styled.div`
 const App = (props) => (
   <Provider store={store}>
     <AppLayout>
-      <Interface>
-        <WorkspaceWrapper>
-          <Workspace />
-        </WorkspaceWrapper>
-        <TabWrapper>
-          <TabContainer data='Hello data' />
-        </TabWrapper>
-        <ControlPanelWrapper>
-          <ControlPanel />
-        </ControlPanelWrapper>
-      </Interface>
+      <WorkspaceWrapper>
+        <Workspace />
+      </WorkspaceWrapper>
+      <TabWrapper>
+        <TabContainer data='Hello data' />
+      </TabWrapper>
+      <ControlPanelWrapper>
+        <ControlPanel />
+      </ControlPanelWrapper>
     </AppLayout>
   </Provider>
 )
 
-export default App;
+export default App

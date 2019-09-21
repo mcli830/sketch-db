@@ -11,13 +11,11 @@ import FloatingInput from './FloatingInput'
 import { changeMode, creatingTable } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
 // constants
-import { TEXT_PADDING, GRID_PATTERN } from '../../vars/theme'
+import { UNIT, THEME, TEXT_PADDING } from '../../vars/theme'
 import { WORKSPACE_SIZE, TABLE_DIM } from '../../vars/ui'
 
 // const idGridPattern = 'svg-grid-pattern'
 const idDropShadow = 'svg-drop-shadow'
-
-const gridPattern = staticGridPattern(12, true)
 
 const SvgWrapper = styled.div`
   width: ${WORKSPACE_SIZE}px;
@@ -27,8 +25,8 @@ const Svg = styled.svg.attrs(props => ({
   height: WORKSPACE_SIZE,
   width: WORKSPACE_SIZE,
 }))`
-  background-color: ${GRID_PATTERN.bg};
-  background-image: ${gridPattern.html};
+  background-color: ${({theme}) => theme.bg[5]};
+  background-image: ${({theme}) => staticGridPattern(theme, UNIT, true).html};
   cursor: ${({mode}) => {
     switch(mode){
       case 'nav': return 'grab';
@@ -39,15 +37,6 @@ const Svg = styled.svg.attrs(props => ({
     }
   }}
 `
-// const Bg = styled.rect.attrs(({pattern}) => ({
-//   x: 0,
-//   y: 0,
-//   width: '500%',
-//   height: '500%',
-//   fill: `url(#${pattern})`,
-// }))`
-//   transform: translate(-50%, -50%);
-// `
 
 class Workspace extends React.Component {
 
@@ -161,9 +150,11 @@ class Workspace extends React.Component {
   // render
   render() {
 
-    const { app, data } = this.props;
-    const workspace = data[app.workingspace];
+    const { app, data } = this.props
+    const workspace = data[app.workingspace]
     const viewBox = workspace.viewBox
+
+    console.log(this.props.theme)
 
     return (
       <React.Fragment>
@@ -173,6 +164,7 @@ class Workspace extends React.Component {
             mode={app.mode}
             onClick={this.generateOnClickFunc()}
             onMouseDown={this.generateOnMouseDownFunc()}
+            theme={this.props.theme}
           >
             <defs>
               <DropShadow id={idDropShadow} />
@@ -184,6 +176,7 @@ class Workspace extends React.Component {
                 name={t.name}
                 fields={t.fields}
                 filter={idDropShadow}
+                theme={this.props.theme}
               />
             ))}
           </Svg>
@@ -195,6 +188,7 @@ class Workspace extends React.Component {
           label='New Table'
           onSubmit={this.handleCreateTable}
           onCancel={()=>this.props.changeMode('create')}
+          theme={this.props.theme}
         />
       </React.Fragment>
     );
@@ -203,6 +197,7 @@ class Workspace extends React.Component {
 
 const mapStateToProps = state => ({
   app: state.app,
+  theme: THEME[state.app.theme],
   data: state.data,
 })
 

@@ -1,18 +1,27 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 // components
 import Fluid from '../common/Fluid'
 // constants
-import { BLACK_HARD } from '../../vars/theme'
+import { THEME } from '../../vars/theme'
 
 const Container = styled(Fluid)`
-  background-color: ${BLACK_HARD};
+  background-color: ${({theme}) => theme.bg[1]};
+  color: ${({theme}) => theme.text[5]};
 `
 
-const TabContainer = ({ data }) => (
-  <Container>
+const TabContainer = ({ theme, data }) => (
+  <Container theme={theme}>
     {data}
   </Container>
 )
 
-export default TabContainer
+const mapStateToProps = state => ({
+  theme: THEME[state.app.theme],
+})
+
+export default connect(
+  mapStateToProps,
+  null,
+)(TabContainer)

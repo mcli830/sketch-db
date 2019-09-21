@@ -22,7 +22,7 @@ const TextInput = styled(Input)`
   width: 100%;
 `
 
-const FloatingInput = ({x, y, on, label, type, onSubmit, onCancel}) => {
+const FloatingInput = ({theme, x, y, on, label, type, onSubmit, onCancel}) => {
 
   const inputRef = React.useRef();
 
@@ -40,7 +40,7 @@ const FloatingInput = ({x, y, on, label, type, onSubmit, onCancel}) => {
   }, [on])
 
   return (
-    <Modal on={on} color={BLACK}>
+    <Modal on={on} color={theme.bg[6]}>
       <Floating x={x} y={y} on={on}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
@@ -48,6 +48,7 @@ const FloatingInput = ({x, y, on, label, type, onSubmit, onCancel}) => {
             type={type}
             placeholder={label}
             onBlur={onCancel}
+            theme={theme}
           />
         </form>
       </Floating>
@@ -56,6 +57,7 @@ const FloatingInput = ({x, y, on, label, type, onSubmit, onCancel}) => {
 }
 
 FloatingInput.propTypes = {
+  theme: PropTypes.object.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   on: PropTypes.bool,

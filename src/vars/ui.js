@@ -1,6 +1,9 @@
 import { UNIT } from './theme'
 
-export const START_MODE = 'nav'
+export const STARTUP = {
+  theme: 'light',
+  mode: 'nav'
+}
 
 export const WORKSPACE_SIZE = 4000
 

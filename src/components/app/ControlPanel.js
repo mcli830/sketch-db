@@ -7,15 +7,13 @@ import Fluid from '../common/Fluid'
 // actions
 import { changeMode } from '../../state/actions/app'
 // constants
-import { UNIT, BLACK, WHITE_SOFT, WHITE_DIM, BLACK_SOFT, PRIMARY, BOX_SHADOW, TRANSITION } from '../../vars/theme'
+import { UNIT, THEME, BLACK, WHITE_SOFT, WHITE_DIM, BLACK_SOFT, PRIMARY, BOX_SHADOW, TRANSITION } from '../../vars/theme'
 import { CONTROL_WIDTH, CONTROL_WIDTH_FULL } from '../../vars/ui'
 // component constants
 const iconSize = CONTROL_WIDTH * 0.8
-const bgColor = lighten(0.1, BLACK)
-const textColor = WHITE_DIM
 
 const Container = styled(Fluid)`
-  background-color: ${bgColor};
+  background-color: ${({theme}) => theme.bg[7]};
   box-shadow: ${BOX_SHADOW.lg};
   width: ${CONTROL_WIDTH}px;
   height: auto;
@@ -35,7 +33,7 @@ const List = styled.ul`
 `
 const ListItem = styled.li`
   width: ${CONTROL_WIDTH_FULL}px;
-  height: auto;
+  height: ${UNIT * 8}px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -45,7 +43,10 @@ const ListItem = styled.li`
     transition: ${TRANSITION.speed[1]} ${TRANSITION.curve.quart};
   }
   & * {
-    color: ${props => props.disabled ? BLACK_SOFT : props.active ? PRIMARY : textColor};
+    color: ${props => props.disabled
+      ? props.theme.bg[9] : props.active
+      ? props.theme.active[5] : props.theme.textSoft[3]
+    };
   }
   ${props => props.active ? `
     & i {
@@ -56,7 +57,7 @@ const ListItem = styled.li`
       &:hover,
       &:focus {
         & * {
-          color: ${props.active ? PRIMARY : WHITE_SOFT};
+          color: ${props.active ? props.theme.active[5] : props.theme.textSoft[5]};
         }
       }
   `}
@@ -77,9 +78,15 @@ const Label = styled.p`
 
 `
 
-const ControlPanel = ({ mode, changeMode }) => {
+const ControlPanel = ({ theme, mode, changeMode }) => {
   // list data dependent on props
   const controls = [
+    { label: 'Theme',
+      mode: 'theme',
+      icon: 'fas fa-palette',
+      active: mode === 'theme',
+      disabled: false,
+    },
     { label: 'Navigate',
       mode: 'nav',
       icon: 'fas fa-arrows-alt',
@@ -101,11 +108,12 @@ const ControlPanel = ({ mode, changeMode }) => {
   ]
 
   return (
-    <Container>
+    <Container theme={theme}>
       <List>
         {controls.map((c,i) => (
           <ListItem
             key={i}
+            theme={theme}
             active={c.active}
             disabled={c.disabled}
             onClick={()=>changeMode(c.mode)}
@@ -122,7 +130,8 @@ const ControlPanel = ({ mode, changeMode }) => {
 }
 
 const mapStateToProps = state => ({
-  mode: state.app.mode
+  mode: state.app.mode,
+  theme: THEME[state.app.theme],
 })
 
 const mapDispatchToProps = dispatch => ({

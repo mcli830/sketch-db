@@ -1,21 +1,21 @@
 import styled from 'styled-components'
 import { lighten } from 'polished'
 // constants
-import { TEXT_PADDING, BLACK, BLACK_HARD, BLACK_SOFT, WHITE_SOFT, BOX_SHADOW } from '../../vars/theme'
+import { TEXT_PADDING, BOX_SHADOW } from '../../vars/theme'
 
 export default styled.input`
-  background-color: ${BLACK_HARD};
-  color: ${WHITE_SOFT};
+  background-color: ${({theme}) => theme.bg[3]};
+  color: ${({theme}) => theme.text[5]};
   padding: ${TEXT_PADDING.y}px ${TEXT_PADDING.x}px;
   border-radius: 10px;
-  border: 2px solid ${lighten(0.1, BLACK)};
+  border: 2px solid ${({theme}) => theme.bg[7]};
   box-shadow: ${BOX_SHADOW.md};
   ::placeholder {
-    color: ${lighten(0.1, BLACK_SOFT)};
+    color: ${({theme}) => theme.bg[7]};
   }
   &:focus,
   &:active {
     outline: none;
-    border-color: ${BLACK_SOFT};
+    border-color: ${({theme}) => theme.bg[9]};
   }
 `

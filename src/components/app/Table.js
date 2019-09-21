@@ -1,29 +1,27 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { lighten } from 'polished'
-import { UNIT, FONT_SIZE, BLACK, WHITE_SOFT, WHITE } from '../../vars/theme'
+import { THEME } from '../../vars/theme'
 import { TABLE_DIM } from '../../vars/ui'
 
 const c = TABLE_DIM
 
 const Rect = styled.rect`
-  fill: ${lighten(0.1, BLACK)};
+  fill: ${({theme}) => theme.bg[7]};
 `
 const Centered = styled.text`
   text-anchor: middle;
   dominant-baseline: middle;
 `
 const Name = styled(Centered)`
-  fill: ${WHITE};
+  fill: ${({theme}) => theme.text[3]};
 `
 const Field = styled(Centered)`
-  fill: ${WHITE_SOFT}
+  fill: ${({theme}) => theme.textSoft[5]};
 `
 
-function Table(props){
-
-  const { name, coords, fields, filter } = props
+function Table({theme, name, coords, fields, filter}){
 
   const tableHeight = c.name.lineHeight + c.field.lineHeight*fields.length + c.padding*2;
   const center = coords.x + c.width*0.5;
@@ -34,6 +32,7 @@ function Table(props){
   return (
     <g>
       <Rect
+        theme={theme}
         x={coords.x}
         y={coords.y}
         width={c.width}
@@ -41,6 +40,7 @@ function Table(props){
         filter={filter ? `url(#${filter})` : ''}
       />
       <Name
+        theme={theme}
         x={center}
         y={coords.y + c.padding + c.name.lineHeight*.5}
         fontSize={c.name.fontSize}
@@ -49,6 +49,7 @@ function Table(props){
       </Name>
       {fields.map((f, i) => (
         <Field
+          theme={theme}
           key={i}
           x={center}
           y={calcFieldYMid(i+1)}
@@ -67,4 +68,11 @@ Table.propTypes = {
   filter: PropTypes.string,
 }
 
-export default Table;
+const mapStateToProps = state => ({
+  theme: THEME[state.app.theme]
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(Table)

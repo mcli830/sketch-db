@@ -1,3 +1,11 @@
+export const CHANGE_THEME = 'CHANGE_THEME'
+export function changeTheme(theme) {
+  return {
+    type: CHANGE_THEME,
+    payload: theme
+  }
+}
+
 export const CHANGE_MODE = 'CHANGE_MODE'
 export function changeMode(mode) {
   return {

@@ -1,3 +1,4 @@
+import React from 'react'
 import { lighten, darken } from 'polished'
 
 export const UNIT = 8
@@ -21,6 +22,46 @@ export const WHITE_DIM = darken(0.4, WHITE)
 export const PRIMARY = '#03a9f4'
 export const SECONDARY = '#ffb74d'
 
+const paletteStep = .05
+
+export function palette(color){
+  return Array.from(Array(11)).map((_,i) => {
+    if (i < 5){
+      return lighten((5-i)*paletteStep, color)
+    } else if (i > 5){
+      return darken((i-5)*paletteStep, color)
+    } else {
+      return color
+    }
+  })
+}
+
+export const PALETTE = {
+  white: palette(WHITE),
+  whiteSoft: palette(darken(paletteStep*5, WHITE)),
+  black: palette(BLACK),
+  blackSoft: palette(lighten(paletteStep*5, BLACK)),
+  primary: palette(PRIMARY),
+  secondary: palette(SECONDARY),
+}
+
+export const THEME = {
+  light: {
+    bg: PALETTE.white,
+    text: PALETTE.black,
+    textSoft: PALETTE.blackSoft,
+    active: PALETTE.primary,
+  },
+  dark: {
+    bg: PALETTE.black.slice().reverse(),
+    text: PALETTE.white.slice().reverse(),
+    textSoft: PALETTE.whiteSoft.slice().reverse(),
+    active: PALETTE.primary.slice().reverse(),
+  }
+}
+
+console.log(THEME)
+
 export const BOX_SHADOW = {
   sm: `1px 1px 5px rgba(0,0,0,0.1)`,
   md: `3px 3px 10px rgba(0,0,0,0.25)`,
@@ -40,12 +81,4 @@ export const TRANSITION = {
     quint: 'cubic-bezier(0.23, 1, 0.32, 1)',
     bounce: 'cubic-bezier(.21,1.11,.6,1.15)',
   }
-}
-
-export const GRID_PATTERN = {
-  stroke: 1,
-  bg: BLACK,
-  sm: lighten(0.05, BLACK),
-  md: lighten(0.1, BLACK),
-  lg: lighten(0.15, BLACK),
 }
