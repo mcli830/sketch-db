@@ -8,7 +8,9 @@ import { TABLE_DIM } from '../../vars/ui'
 const c = TABLE_DIM
 
 const Rect = styled.rect`
-  fill: ${({theme}) => theme.bg[7]};
+  fill: ${({theme}) => theme.bg[3]};
+  stroke: ${({theme}) => theme.bg[8]}
+  stroke-width: 1;
 `
 const Centered = styled.text`
   text-anchor: middle;
@@ -16,9 +18,12 @@ const Centered = styled.text`
 `
 const Name = styled(Centered)`
   fill: ${({theme}) => theme.text[3]};
+  font-size: ${TABLE_DIM.name.fontSize};
+  font-weight: bold;
 `
 const Field = styled(Centered)`
   fill: ${({theme}) => theme.textSoft[5]};
+  font-size: ${TABLE_DIM.field.fontSize};
 `
 
 function Table({theme, name, coords, fields, filter}){
@@ -43,7 +48,6 @@ function Table({theme, name, coords, fields, filter}){
         theme={theme}
         x={center}
         y={coords.y + c.padding + c.name.lineHeight*.5}
-        fontSize={c.name.fontSize}
       >
         {name}
       </Name>

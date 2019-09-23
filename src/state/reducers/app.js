@@ -3,7 +3,7 @@ import {
   CHANGE_MODE,
   CREATING_TABLE
 } from '../actions/app'
-import { STARTUP } from '../../vars/ui'
+import { MODE, STARTUP } from '../../vars/data'
 
 export default function(state = {
   theme: STARTUP.theme,
@@ -22,7 +22,7 @@ export default function(state = {
     }
     case CREATING_TABLE: return {
       ...state,
-      mode: 'creating',
+      mode: MODE.createTable,
       coords: action.payload,
     }
     default: return state;

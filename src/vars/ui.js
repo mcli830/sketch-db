@@ -1,10 +1,5 @@
 import { UNIT } from './theme'
 
-export const STARTUP = {
-  theme: 'light',
-  mode: 'nav'
-}
-
 export const WORKSPACE_SIZE = 4000
 
 export const TAB_HEIGHT = UNIT * 4
@@ -18,8 +13,8 @@ export const TABLE_DIM = {
   padding: UNIT,
   width: UNIT*24,
   name: {
-    fontSize: UNIT*3,
-    lineHeight: UNIT*5,
+    fontSize: UNIT*2,
+    lineHeight: UNIT*4,
   },
   field: {
     fontSize: UNIT*2,

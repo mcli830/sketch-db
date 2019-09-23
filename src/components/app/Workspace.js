@@ -11,8 +11,9 @@ import FloatingInput from './FloatingInput'
 import { changeMode, creatingTable } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
 // constants
-import { UNIT, THEME, TEXT_PADDING } from '../../vars/theme'
+import { UNIT, THEME, TEXT_PADDING, BOX_SHADOW } from '../../vars/theme'
 import { WORKSPACE_SIZE, TABLE_DIM } from '../../vars/ui'
+import { MODE } from '../../vars/data'
 
 // const idGridPattern = 'svg-grid-pattern'
 const idDropShadow = 'svg-drop-shadow'
@@ -29,10 +30,10 @@ const Svg = styled.svg.attrs(props => ({
   background-image: ${({theme}) => staticGridPattern(theme, UNIT, true).html};
   cursor: ${({mode}) => {
     switch(mode){
-      case 'nav': return 'grab';
-      case 'moving': return 'grabbing';
-      case 'create': return 'cell';
-      case 'delete': return 'crosshair';
+      case MODE.move: return 'grab';
+      case MODE.movePage: return 'grabbing';
+      case MODE.create: return 'cell';
+      case MODE.delete: return 'crosshair';
       default: return 'auto';
     }
   }}
@@ -68,11 +69,11 @@ class Workspace extends React.Component {
   globalKeypress(e){
     switch(e.keyCode){
       case 27:
-        if (this.props.app.mode !== 'nav'){
-          if (this.props.app.mode === 'creating'){
-            return this.props.changeMode('create');
+        if (this.props.app.mode !== MODE.move){
+          if (this.props.app.mode === MODE.createTable){
+            return this.props.changeMode(MODE.create);
           }
-          this.props.changeMode('nav')
+          this.props.changeMode(MODE.move)
         }
         break;
       default:
@@ -82,7 +83,7 @@ class Workspace extends React.Component {
   // function generators for different states
   generateOnClickFunc(){
     switch(this.props.app.mode){
-      case 'create':
+      case MODE.create:
         return this.handleCreating;
         break;
       default: return null;
@@ -91,7 +92,7 @@ class Workspace extends React.Component {
 
   generateOnMouseDownFunc(){
     switch(this.props.app.mode){
-      case 'nav':
+      case MODE.move:
         return this.handleNav;
       default: return null;
     }
@@ -105,7 +106,7 @@ class Workspace extends React.Component {
       y: e.clientY,
     }
     const changeMode = this.props.changeMode
-    changeMode('moving')
+    changeMode(MODE.movePage)
     window.addEventListener('mousemove', navMove)
     window.addEventListener('mouseup', navQuit)
     function navMove(e){
@@ -122,7 +123,7 @@ class Workspace extends React.Component {
       e.preventDefault();
       window.removeEventListener('mousemove', navMove)
       window.removeEventListener('mouseup', navQuit)
-      changeMode('nav')
+      changeMode(MODE.move)
     }
   }
   handleCreating(e){
@@ -144,17 +145,15 @@ class Workspace extends React.Component {
       x: this.props.app.coords.page.x - TEXT_PADDING.x,
       y: this.props.app.coords.page.y - TABLE_DIM.name.lineHeight*0.5,
     });
-    this.props.changeMode('create')
+    this.props.changeMode(MODE.create)
   }
 
   // render
   render() {
 
-    const { app, data } = this.props
+    const { app, data, theme } = this.props
     const workspace = data[app.workingspace]
     const viewBox = workspace.viewBox
-
-    console.log(this.props.theme)
 
     return (
       <React.Fragment>
@@ -164,10 +163,17 @@ class Workspace extends React.Component {
             mode={app.mode}
             onClick={this.generateOnClickFunc()}
             onMouseDown={this.generateOnMouseDownFunc()}
-            theme={this.props.theme}
+            theme={theme}
           >
             <defs>
-              <DropShadow id={idDropShadow} />
+              <DropShadow
+                id={idDropShadow}
+                color={BOX_SHADOW.md.color}
+                opacity={BOX_SHADOW.md.alpha}
+                dx={BOX_SHADOW.md.delta}
+                dy={BOX_SHADOW.md.delta}
+                stdDeviation={BOX_SHADOW.md.stdDev}
+              />
             </defs>
             {workspace.tables.map((t,i) => (
               <Table
@@ -176,19 +182,19 @@ class Workspace extends React.Component {
                 name={t.name}
                 fields={t.fields}
                 filter={idDropShadow}
-                theme={this.props.theme}
+                theme={theme}
               />
             ))}
           </Svg>
         </SvgWrapper>
         <FloatingInput
-          x={this.props.app.coords.client.x}
-          y={this.props.app.coords.client.y}
-          on={this.props.app.mode === 'creating'}
+          x={app.coords.client.x}
+          y={app.coords.client.y}
+          on={app.mode === MODE.createTable}
           label='New Table'
           onSubmit={this.handleCreateTable}
-          onCancel={()=>this.props.changeMode('create')}
-          theme={this.props.theme}
+          onCancel={()=>this.props.changeMode(MODE.create)}
+          theme={theme}
         />
       </React.Fragment>
     );

@@ -22,6 +22,48 @@ export const WHITE_DIM = darken(0.4, WHITE)
 export const PRIMARY = '#03a9f4'
 export const SECONDARY = '#ffb74d'
 
+export const BOX_SHADOW = {
+  sm: {
+    color: '#000',
+    alpha: 0.1,
+    rgba: 'rgba(0,0,0,0.1)',
+    delta: 1,
+    blur: 5,
+    css: `1px 1px 5px rgba(0,0,0,0.1)`,
+  },
+  md: {
+    color: '#000',
+    alpha: 0.25,
+    rgba: 'rgba(0,0,0,0.25)',
+    delta: 3,
+    blur: 10,
+    css: `3px 3px 10px rgba(0,0,0,0.25)`,
+  },
+  lg: {
+    color: '#000',
+    alpha: 0.4,
+    rgba: 'rgba(0,0,0,0.4)',
+    delta: 5,
+    blur: 15,
+    css: `5px 5px 15px rgba(0,0,0,0.4)`,
+  },
+}
+
+export const TRANSITION = {
+  speed: {
+    1: '150ms',
+    2: '250ms',
+    3: '500ms',
+    4: '750ms',
+    5: '1s',
+  },
+  curve: {
+    quart: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+    quint: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    bounce: 'cubic-bezier(.21,1.11,.6,1.15)',
+  }
+}
+
 const paletteStep = .05
 
 export function palette(color){
@@ -67,37 +109,20 @@ export const THEME = {
     textSoft: PALETTE.blackSoft,
     primary: PALETTE.primary,
     secondary: PALETTE.secondary,
+    shadow: {
+      color: PALETTE.blackSoft[5]
+    },
     controlPanel,
   },
   dark: {
-    bg: PALETTE.black.slice().reverse(),
-    text: PALETTE.white.slice().reverse(),
-    textSoft: PALETTE.whiteSoft.slice().reverse(),
-    primary: PALETTE.primary.slice().reverse(),
-    secondary: PALETTE.secondary.slice().reverse(),
+    bg: PALETTE_REV.black,
+    text: PALETTE_REV.white,
+    textSoft: PALETTE_REV.whiteSoft,
+    primary: PALETTE_REV.primary,
+    secondary: PALETTE_REV.secondary,
+    shadow: {
+      color: PALETTE.black[1],
+    },
     controlPanel,
-  }
-}
-
-console.log(THEME)
-
-export const BOX_SHADOW = {
-  sm: `1px 1px 5px rgba(0,0,0,0.1)`,
-  md: `3px 3px 10px rgba(0,0,0,0.25)`,
-  lg: `5px 5px 15px rgba(0,0,0,0.4)`,
-}
-
-export const TRANSITION = {
-  speed: {
-    1: '150ms',
-    2: '250ms',
-    3: '500ms',
-    4: '750ms',
-    5: '1s',
-  },
-  curve: {
-    quart: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
-    quint: 'cubic-bezier(0.23, 1, 0.32, 1)',
-    bounce: 'cubic-bezier(.21,1.11,.6,1.15)',
   }
 }

@@ -17,11 +17,11 @@ DropShadow.propTypes = {
 }
 
 DropShadow.defaultProps = {
-  dx: 4,
-  dy: 4,
-  stdDeviation: 6,
-  color: '#222',
-  opacity: 0.8,
+  dx: 2,
+  dy: 2,
+  stdDeviation: 4,
+  color: '#444',
+  opacity: 0.5,
 }
 
 export default DropShadow

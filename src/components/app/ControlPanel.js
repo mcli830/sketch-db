@@ -9,6 +9,7 @@ import { changeTheme, changeMode } from '../../state/actions/app'
 // constants
 import { UNIT, THEME, BLACK, BOX_SHADOW, TRANSITION } from '../../vars/theme'
 import { CONTROL_WIDTH, CONTROL_WIDTH_FULL } from '../../vars/ui'
+import { MODE } from '../../vars/data'
 // component constants
 const iconSize = CONTROL_WIDTH * 0.8
 const sublistTextSize = UNIT*2.2
@@ -18,7 +19,7 @@ const transitionQuart = `${TRANSITION.speed[1]} ${TRANSITION.curve.quart}`
 
 const Container = styled(Fluid)`
   background-color: ${({theme}) => theme.controlPanel.bg[7]};
-  box-shadow: ${BOX_SHADOW.lg};
+  box-shadow: ${BOX_SHADOW.lg.css};
   width: ${CONTROL_WIDTH}px;
   height: auto;
   min-width: ${CONTROL_WIDTH}px;
@@ -155,27 +156,27 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
     }, {
       label: 'Navigate',
       type: 'action',
-      mode: 'nav',
+      mode: MODE.move,
       icon: 'fas fa-hand-paper',
-      active: ['nav', 'moving'].includes(mode),
+      active: mode === MODE.move,
       activeColor: theme.primary[5],
       onClick: ()=>changeMode('nav'),
       disabled: false,
     }, {
       label: 'Create Table',
       type: 'action',
-      mode: 'create',
+      mode: MODE.create,
       icon: 'fas fa-plus',
-      active: ['create', 'creating'].includes(mode),
+      active: [MODE.create, MODE.createTable].includes(mode),
       activeColor: theme.primary[5],
       onClick: ()=>changeMode('create'),
       disabled: false,
     }, {
       label: 'Delete Table',
       type: 'action',
-      mode: 'delete',
+      mode: MODE.delete,
       icon: 'fas fa-trash',
-      active: mode==='delete',
+      active: mode===MODE.delete,
       activeColor: theme.primary[5],
       onClick: ()=>changeMode('delete'),
       disabled: false,
