@@ -54,7 +54,6 @@ class Workspace extends React.Component {
     this.svgRef = React.createRef();
     // bindings
     this.globalKeypress = this.globalKeypress.bind(this)
-    this.handleMove = this.handleMove.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
   }
@@ -102,17 +101,17 @@ class Workspace extends React.Component {
   generateOnMouseDownFunc(){
     switch(this.props.app.mode){
       case MODE.move:
-        return this.handleMove;
+        return this.handleMovePage;
       default: return null;
     }
   }
   // handlers
-  handleMove = dragElementHandler({
+  handleMovePage = dragElementHandler({
     condition: e => e.target === e.currentTarget,
     preventDefault: true,
-    onInit: () => changeMode(MODE.movePage),
+    onInit: () => this.props.changeMode(MODE.movePage),
     onMove: d => window.scrollBy(-d.x, -d.y, { behavior: 'smooth' }),
-    onQuit: () => changeMode(MODE.move),
+    onQuit: () => this.props.changeMode(MODE.move),
   })
 
   handleCreating(e){

@@ -1,6 +1,6 @@
 export default (options = {}) => {
 
-  const condition = options.clickCondition || false
+  const condition = options.condition || false
   const prevent = options.preventDefault || false
   const onInit = options.onInit || false
   const onMove = options.onMove || false
