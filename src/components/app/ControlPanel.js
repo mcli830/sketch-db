@@ -72,40 +72,40 @@ const ListItem = styled.li`
   `}
 `
 
-const Sublist = styled.li`
-  width: 100%;
-  height: ${({open,size}) => open ? (sublistTextSize+UNIT*2)*size : 0}px;
-  overflow: hidden;
-  position: relative;
-  font-size: ${sublistTextSize}px;
-  transition: height ${transitionQuart};
-  background-color: ${({theme}) => theme.bg[6]};
-`
-const SublistItemContainer = styled.ul`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  margin: 0;
-  box-shadow: inset 0 ${insetShadowOffset}px 4px ${insetShadow};
-  padding-top: ${insetShadowOffset}px;
-`
-const SublistItem = styled.li.attrs(({onClick}) => ({
-  onClick: onClick,
-}))`
-  width: 100%;
-  height: auto;
-  padding: ${UNIT}px;
-  padding-left: ${UNIT*1.5}px;
-  display: flex;
-  align-items: center;
-  cursor: ${({cursor}) => cursor};
-  color: ${props => props.active ? props.color : props.theme.controlPanel.textSoft[4]};
-  transition: padding-left ${transitionQuart};
-  &:hover {
-    color: ${props => props.active ? props.color : props.theme.controlPanel.textSoft[3]};
-  }
-`
+// const Sublist = styled.li`
+//   width: 100%;
+//   height: ${({open,size}) => open ? (sublistTextSize+UNIT*2)*size : 0}px;
+//   overflow: hidden;
+//   position: relative;
+//   font-size: ${sublistTextSize}px;
+//   transition: height ${transitionQuart};
+//   background-color: ${({theme}) => theme.bg[6]};
+// `
+// const SublistItemContainer = styled.ul`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   margin: 0;
+//   box-shadow: inset 0 ${insetShadowOffset}px 4px ${insetShadow};
+//   padding-top: ${insetShadowOffset}px;
+// `
+// const SublistItem = styled.li.attrs(({onClick}) => ({
+//   onClick: onClick,
+// }))`
+//   width: 100%;
+//   height: auto;
+//   padding: ${UNIT}px;
+//   padding-left: ${UNIT*1.5}px;
+//   display: flex;
+//   align-items: center;
+//   cursor: ${({cursor}) => cursor};
+//   color: ${props => props.active ? props.color : props.theme.controlPanel.textSoft[4]};
+//   transition: padding-left ${transitionQuart};
+//   &:hover {
+//     color: ${props => props.active ? props.color : props.theme.controlPanel.textSoft[3]};
+//   }
+// `
 const IconWrapper = styled.figure`
   flex: 0 0 ${CONTROL_WIDTH}px;
   height: ${CONTROL_WIDTH}px;
