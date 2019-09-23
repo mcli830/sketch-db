@@ -158,9 +158,9 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
       type: 'action',
       mode: MODE.move,
       icon: 'fas fa-hand-paper',
-      active: mode === MODE.move,
+      active: [MODE.move, MODE.movePage, MODE.moveTable].includes(mode),
       activeColor: theme.primary[5],
-      onClick: ()=>changeMode('nav'),
+      onClick: ()=>changeMode(MODE.move),
       disabled: false,
     }, {
       label: 'Create Table',
@@ -169,7 +169,7 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
       icon: 'fas fa-plus',
       active: [MODE.create, MODE.createTable].includes(mode),
       activeColor: theme.primary[5],
-      onClick: ()=>changeMode('create'),
+      onClick: ()=>changeMode(MODE.create),
       disabled: false,
     }, {
       label: 'Delete Table',
@@ -178,7 +178,7 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
       icon: 'fas fa-trash',
       active: mode===MODE.delete,
       activeColor: theme.primary[5],
-      onClick: ()=>changeMode('delete'),
+      onClick: ()=>changeMode(MODE.delete),
       disabled: false,
     }
   ]
@@ -234,7 +234,7 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
             case 'toggle':
               return renderListItem(c,i)
             case 'divider':
-              return <Divider theme={theme} />
+              return <Divider key={i} theme={theme} />
             default:
               return null
           }

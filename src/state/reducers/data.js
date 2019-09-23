@@ -3,12 +3,6 @@ import { CREATE_TABLE, createTable } from '../actions/data'
 export default function(state = [
   {
     name: 'Workspace',
-    viewBox: {
-      x: 0,
-      y: 0,
-      w: 900,
-      h: 600
-    },
     tables: []
   }
 ], action){

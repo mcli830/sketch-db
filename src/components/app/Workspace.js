@@ -7,6 +7,8 @@ import { staticGridPattern } from '../svg/GridPattern'
 import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
+// util
+import dragElementHandler from '../../utils/dragElementHandler'
 // actions
 import { changeMode, creatingTable } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
@@ -30,10 +32,15 @@ const Svg = styled.svg.attrs(props => ({
   background-image: ${({theme}) => staticGridPattern(theme, UNIT, true).html};
   cursor: ${({mode}) => {
     switch(mode){
-      case MODE.move: return 'grab';
-      case MODE.movePage: return 'grabbing';
-      case MODE.create: return 'cell';
-      case MODE.delete: return 'crosshair';
+      case MODE.move:
+        return 'grab';
+      case MODE.movePage:
+      case MODE.moveTable:
+        return 'grabbing';
+      case MODE.create:
+        return 'cell';
+      case MODE.delete:
+        return 'crosshair';
       default: return 'auto';
     }
   }}
@@ -47,7 +54,7 @@ class Workspace extends React.Component {
     this.svgRef = React.createRef();
     // bindings
     this.globalKeypress = this.globalKeypress.bind(this)
-    this.handleNav = this.handleNav.bind(this)
+    this.handleMove = this.handleMove.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
   }
@@ -55,8 +62,10 @@ class Workspace extends React.Component {
   // lifecycle
   componentDidMount(){
     // testing
-    window.addEventListener('click', ()=>{
+    window.addEventListener('click', (e)=>{
       console.log('GLOBAL SVG CLICK')
+      if (e.target.dataset.table) console.log(e.target.dataset.table)
+
     })
     window.addEventListener('keyup', this.globalKeypress)
   }
@@ -93,39 +102,19 @@ class Workspace extends React.Component {
   generateOnMouseDownFunc(){
     switch(this.props.app.mode){
       case MODE.move:
-        return this.handleNav;
+        return this.handleMove;
       default: return null;
     }
   }
   // handlers
-  handleNav(e){
-    if (e.target !== e.currentTarget) return null;
-    e.preventDefault();
-    const coords = {
-      x: e.clientX,
-      y: e.clientY,
-    }
-    const changeMode = this.props.changeMode
-    changeMode(MODE.movePage)
-    window.addEventListener('mousemove', navMove)
-    window.addEventListener('mouseup', navQuit)
-    function navMove(e){
-      e.preventDefault();
-      const d = {
-        x: e.clientX - coords.x,
-        y: e.clientY - coords.y,
-      }
-      coords.x = e.clientX
-      coords.y = e.clientY
-      window.scrollBy(-d.x, -d.y, { behavior: 'smooth'})
-    }
-    function navQuit(e){
-      e.preventDefault();
-      window.removeEventListener('mousemove', navMove)
-      window.removeEventListener('mouseup', navQuit)
-      changeMode(MODE.move)
-    }
-  }
+  handleMove = dragElementHandler({
+    condition: e => e.target === e.currentTarget,
+    preventDefault: true,
+    onInit: () => changeMode(MODE.movePage),
+    onMove: d => window.scrollBy(-d.x, -d.y, { behavior: 'smooth' }),
+    onQuit: () => changeMode(MODE.move),
+  })
+
   handleCreating(e){
     e.preventDefault();
     this.props.creatingTable({

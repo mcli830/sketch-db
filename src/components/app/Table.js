@@ -43,6 +43,7 @@ function Table({theme, name, coords, fields, filter}){
         width={c.width}
         height={tableHeight}
         filter={filter ? `url(#${filter})` : ''}
+        onClick={handleMoveTable}
       />
       <Name
         theme={theme}
@@ -76,7 +77,11 @@ const mapStateToProps = state => ({
   theme: THEME[state.app.theme]
 })
 
+const mapDispatchToProps = dispatch => ({
+  changeMode: mode => dispatch(changeMode(mode))
+})
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps,
 )(Table)
