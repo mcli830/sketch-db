@@ -45,18 +45,37 @@ export const PALETTE = {
   secondary: palette(SECONDARY),
 }
 
+export const PALETTE_REV = {
+  white: PALETTE.white.slice().reverse(),
+  whiteSoft: PALETTE.whiteSoft.slice().reverse(),
+  black: PALETTE.black.slice().reverse(),
+  blackSoft: PALETTE.blackSoft.slice().reverse(),
+  primary: PALETTE.primary.slice().reverse(),
+  secondary: PALETTE.secondary.slice().reverse(),
+}
+
+const controlPanel = {
+  bg: PALETTE_REV.black,
+  text: PALETTE_REV.white,
+  textSoft: PALETTE_REV.whiteSoft,
+}
+
 export const THEME = {
   light: {
     bg: PALETTE.white,
     text: PALETTE.black,
     textSoft: PALETTE.blackSoft,
-    active: PALETTE.primary,
+    primary: PALETTE.primary,
+    secondary: PALETTE.secondary,
+    controlPanel,
   },
   dark: {
     bg: PALETTE.black.slice().reverse(),
     text: PALETTE.white.slice().reverse(),
     textSoft: PALETTE.whiteSoft.slice().reverse(),
-    active: PALETTE.primary.slice().reverse(),
+    primary: PALETTE.primary.slice().reverse(),
+    secondary: PALETTE.secondary.slice().reverse(),
+    controlPanel,
   }
 }
 
