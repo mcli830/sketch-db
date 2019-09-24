@@ -35,7 +35,7 @@ function Table({theme, name, coords, fields, filter}){
   }
 
   return (
-    <g>
+    <g data-table={name}>
       <Rect
         theme={theme}
         x={coords.x}

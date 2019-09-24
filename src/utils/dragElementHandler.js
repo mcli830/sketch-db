@@ -1,5 +1,6 @@
 export default (options = {}) => {
 
+  const dataType = typeof options.data
   const condition = options.condition || false
   const prevent = options.preventDefault || false
   const onInit = options.onInit || false
@@ -7,7 +8,10 @@ export default (options = {}) => {
   const onQuit = options.onQuit || false
 
   return (e) => {
-    if (!condition(e)) return null;
+
+    const data = dataType === 'function' ? options.data(e) : options.data || null
+
+    if (!condition(data)) return null;
     if (prevent) e.preventDefault()
 
     const coords = {
@@ -15,7 +19,7 @@ export default (options = {}) => {
       y: e.clientY || 0,
     }
 
-    if (!!onInit) onInit()
+    if (!!onInit) onInit(data)
 
     window.addEventListener('mousemove', move)
     window.addEventListener('mouseup', quit)
@@ -28,14 +32,14 @@ export default (options = {}) => {
       }
       coords.x = e.clientX
       coords.y = e.clientY
-      if (!!onMove) onMove(d)
+      if (!!onMove) onMove(data, d)
     }
 
     function quit(e){
       if (prevent) e.preventDefault()
       window.removeEventListener('mousemove', move)
       window.removeEventListener('mouseup', quit)
-      if (!!onQuit) onQuit(coords)
+      if (!!onQuit) onQuit(data, coords)
     }
   }
 }

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { lighten } from 'polished'
 // constants
 import { TEXT_PADDING, BOX_SHADOW } from '../../vars/theme'
 

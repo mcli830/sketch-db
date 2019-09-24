@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Input from '../common/Input'
 import Modal from '../common/Modal'
 // constants
-import { TEXT_PADDING, BLACK } from '../../vars/theme'
+import { TEXT_PADDING } from '../../vars/theme'
 import { TABLE_DIM } from '../../vars/ui'
 
 const Floating = styled.div`

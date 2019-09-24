@@ -1,7 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import styled from 'styled-components'
-import { lighten } from 'polished'
 // components
 import AppLayout from '../components/layouts/AppLayout'
 import TabContainer from '../components/app/TabContainer'
@@ -12,8 +11,8 @@ import '../styles/fontawesome/css/all.css'
 // store
 import createStore from '../state/createStore'
 // constants
-import { UNIT, BLACK } from '../vars/theme'
-import { TAB_HEIGHT, CONTROL_WIDTH } from '../vars/ui'
+import { UNIT } from '../vars/theme'
+import { TAB_HEIGHT } from '../vars/ui'
 
 const store = createStore();
 

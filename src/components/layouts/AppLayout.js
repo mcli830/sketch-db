@@ -6,7 +6,7 @@ import { WORKSPACE_SIZE } from '../../vars/ui'
 const Container = styled.div`
   background: ${BLACK};
   overflow: auto;
-  width: 4000px;
+  width: ${WORKSPACE_SIZE}px;
   & * {
     color: ${WHITE};
   }

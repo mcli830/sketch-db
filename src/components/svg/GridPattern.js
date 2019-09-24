@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import PropTypes from 'prop-types'
 // constants
-import { UNIT, getGridPatternStyle } from '../../vars/theme'
+import { UNIT } from '../../vars/theme'
 
 const getShades = theme => {
   return {

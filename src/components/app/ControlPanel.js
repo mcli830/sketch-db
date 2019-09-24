@@ -1,20 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { transparentize } from 'polished'
+// import { transparentize } from 'polished'
 // components
 import Fluid from '../common/Fluid'
 // actions
 import { changeTheme, changeMode } from '../../state/actions/app'
 // constants
-import { UNIT, THEME, BLACK, BOX_SHADOW, TRANSITION } from '../../vars/theme'
+import { UNIT, THEME, BOX_SHADOW, TRANSITION } from '../../vars/theme'
 import { CONTROL_WIDTH, CONTROL_WIDTH_FULL } from '../../vars/ui'
 import { MODE } from '../../vars/data'
 // component constants
-const iconSize = CONTROL_WIDTH * 0.8
-const sublistTextSize = UNIT*2.2
-const insetShadowOffset = 2
-const insetShadow = transparentize(0.8, BLACK)
+const iconSize = CONTROL_WIDTH * 0.35
+// const sublistTextSize = UNIT*2.2
+// const insetShadowOffset = 2
+// const insetShadow = transparentize(0.8, BLACK)
 const transitionQuart = `${TRANSITION.speed[1]} ${TRANSITION.curve.quart}`
 
 const Container = styled(Fluid)`
@@ -195,7 +195,7 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
         onClick={c.onClick}
       >
         <IconWrapper>
-          <i className={c.active ? c.iconActive || c.icon : c.icon} />
+          <Icon className={c.active ? c.iconActive || c.icon : c.icon} />
         </IconWrapper>
         <Label>{c.type === 'toggle' && c.active ? c.labelActive : c.label}</Label>
       </ListItem>

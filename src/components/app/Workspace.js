@@ -2,13 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 // components
-import Fluid from '../common/Fluid'
 import { staticGridPattern } from '../svg/GridPattern'
 import DropShadow from '../svg/DropShadow'
 import Table from './Table'
 import FloatingInput from './FloatingInput'
 // util
 import dragElementHandler from '../../utils/dragElementHandler'
+import getTableName from '../../utils/getTableName'
 // actions
 import { changeMode, creatingTable } from '../../state/actions/app'
 import { createTable } from '../../state/actions/data'
@@ -63,8 +63,6 @@ class Workspace extends React.Component {
     // testing
     window.addEventListener('click', (e)=>{
       console.log('GLOBAL SVG CLICK')
-      if (e.target.dataset.table) console.log(e.target.dataset.table)
-
     })
     window.addEventListener('keyup', this.globalKeypress)
   }
@@ -93,8 +91,8 @@ class Workspace extends React.Component {
     switch(this.props.app.mode){
       case MODE.create:
         return this.handleCreating;
-        break;
-      default: return null;
+      default:
+        return null;
     }
   }
 
@@ -107,10 +105,11 @@ class Workspace extends React.Component {
   }
   // handlers
   handleMovePage = dragElementHandler({
-    condition: e => e.target === e.currentTarget,
+    data: (e) => ({ target: e.target, listener: e.currentTarget }),
+    condition: (data) => !!getTableName(data.target) || data.target === data.listener,
     preventDefault: true,
     onInit: () => this.props.changeMode(MODE.movePage),
-    onMove: d => window.scrollBy(-d.x, -d.y, { behavior: 'smooth' }),
+    onMove: (data, d) => window.scrollBy(-d.x, -d.y, { behavior: 'smooth' }),
     onQuit: () => this.props.changeMode(MODE.move),
   })
 
@@ -141,7 +140,6 @@ class Workspace extends React.Component {
 
     const { app, data, theme } = this.props
     const workspace = data[app.workingspace]
-    const viewBox = workspace.viewBox
 
     return (
       <React.Fragment>

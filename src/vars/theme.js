@@ -1,4 +1,3 @@
-import React from 'react'
 import { lighten, darken } from 'polished'
 
 export const UNIT = 8
