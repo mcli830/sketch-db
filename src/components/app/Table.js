@@ -26,7 +26,7 @@ const Field = styled(Centered)`
   font-size: ${TABLE_DIM.field.fontSize};
 `
 
-function Table({theme, name, coords, fields, filter}){
+function Table({theme, name, index, coords, fields, filter}){
 
   const tableHeight = c.name.lineHeight + c.field.lineHeight*fields.length + c.padding*2;
   const center = coords.x + c.width*0.5;
@@ -35,7 +35,7 @@ function Table({theme, name, coords, fields, filter}){
   }
 
   return (
-    <g data-table={name}>
+    <g data-table={name} data-index={index} className='Table'>
       <Rect
         theme={theme}
         x={coords.x}

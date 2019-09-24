@@ -9,3 +9,15 @@ export function createTable(workspace, name, coords) {
     }
   }
 }
+
+export const MOVE_TABLES = 'MOVE_TABLES'
+export function moveTables(workspace, indexes, delta) {
+  return {
+    type: MOVE_TABLES,
+    payload: {
+      workspace,
+      indexes,
+      delta,
+    }
+  }
+}

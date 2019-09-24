@@ -8,10 +8,10 @@ import Table from './Table'
 import FloatingInput from './FloatingInput'
 // util
 import dragElementHandler from '../../utils/dragElementHandler'
-import getTableName from '../../utils/getTableName'
+import getTableData from '../../utils/getTableData'
 // actions
 import { changeMode, creatingTable } from '../../state/actions/app'
-import { createTable } from '../../state/actions/data'
+import { createTable, moveTables } from '../../state/actions/data'
 // constants
 import { UNIT, THEME, TEXT_PADDING, BOX_SHADOW } from '../../vars/theme'
 import { WORKSPACE_SIZE, TABLE_DIM } from '../../vars/ui'
@@ -56,6 +56,7 @@ class Workspace extends React.Component {
     this.globalKeypress = this.globalKeypress.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
+    this.handleMoveTables = this.handleMoveTables.bind(this)
   }
 
   // lifecycle
@@ -99,19 +100,39 @@ class Workspace extends React.Component {
   generateOnMouseDownFunc(){
     switch(this.props.app.mode){
       case MODE.move:
-        return this.handleMovePage;
+        return this.handleMove;
       default: return null;
     }
   }
   // handlers
-  handleMovePage = dragElementHandler({
-    data: (e) => ({ target: e.target, listener: e.currentTarget }),
-    condition: (data) => !!getTableName(data.target) || data.target === data.listener,
+  handleMove = dragElementHandler({
+    payload: (e) => {
+      const table = getTableData(e.target)
+      return {
+        listener: e.currentTarget,
+        target: e.target,
+        table: !!table ? table : false, // if no table, move page
+      }
+    },
+    condition: (p) => p.moveTable || p.movePage,
     preventDefault: true,
-    onInit: () => this.props.changeMode(MODE.movePage),
-    onMove: (data, d) => window.scrollBy(-d.x, -d.y, { behavior: 'smooth' }),
+    onInit: (p) => this.props.changeMode(!!p.table ? MODE.moveTable : MODE.movePage),
+    onMove: (p, d) => {
+      if (!!p.table){
+        return this.handleMoveTables([p.table.index], d)
+      } else  {
+        return this.handleMovePage(d)
+      }
+    },
     onQuit: () => this.props.changeMode(MODE.move),
   })
+
+  handleMovePage(d){
+    window.scrollBy(-d.x, -d.y, {behavior: 'smooth'})
+  }
+  handleMoveTables(indexes, d){
+    this.props.moveTables(this.props.app.workingspace, indexes, d)
+  }
 
   handleCreating(e){
     e.preventDefault();
@@ -164,6 +185,7 @@ class Workspace extends React.Component {
             {workspace.tables.map((t,i) => (
               <Table
                 key={i}
+                index={i}
                 coords={t.coords}
                 name={t.name}
                 fields={t.fields}
@@ -197,6 +219,7 @@ const mapDispatchToProps = dispatch => ({
   changeMode: (mode) => dispatch(changeMode(mode)),
   creatingTable: (coords) => dispatch(creatingTable(coords)),
   createTable: (workspace, name, coords) => dispatch(createTable(workspace, name, coords)),
+  moveTables: (workspace, indexes, delta) => dispatch(moveTables(workspace, indexes, delta)),
 })
 
 export default connect(
