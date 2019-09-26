@@ -1,12 +1,11 @@
 export default function getTableData(t){
-  const p = t.parentNode
-  const has = Object.prototype.hasOwnProperty
+  const p = t.tagName === 'g' ? t : t.parentNode
   return (
     p.tagName === 'g'
     && p.classList.contains('Table')
-    && has.call(p, 'dataset')
   ) ? {
     name: p.dataset.table,
-    index: p.dataset.index,
+    index: parseInt(p.dataset.index, 10),
+    node: p,
   } : null
 }

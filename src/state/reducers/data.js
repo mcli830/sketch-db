@@ -17,21 +17,24 @@ export default function(state = [
 
   function createTable(){
     const { workspace, name, coords } = action.payload
-    const newState = [...state]
-    newState[workspace].tables.push(newTable(name, coords))
-    return newState
+    const nextState = [...state]
+    nextState[workspace].tables.push(newTable(name, coords))
+    return nextState
   }
 
   function moveTables(){
-    const { workspace, indexes, delta } = action.payload
-    const newState = [...state]
-    newState[workspace].tables.forEach((t,i) => {
+    console.log(action.payload)
+    const { workspace, indexes, offset } = action.payload
+    const nextState = [...state]
+    nextState[workspace].tables.forEach((t,i) => {
       if (indexes.includes(i)) {
-        t.coords.x += delta.x
-        t.coords.y += delta.y
+        t.coords = {
+          x: t.coords.x + offset.x,
+          y: t.coords.y + offset.y,
+        }
       }
     })
-    return newState
+    return nextState
   }
 
   switch (action.type){

@@ -56,6 +56,7 @@ class Workspace extends React.Component {
     this.globalKeypress = this.globalKeypress.bind(this)
     this.handleCreating = this.handleCreating.bind(this)
     this.handleCreateTable = this.handleCreateTable.bind(this)
+    this.handleMovingTables = this.handleMovingTables.bind(this)
     this.handleMoveTables = this.handleMoveTables.bind(this)
   }
 
@@ -114,24 +115,32 @@ class Workspace extends React.Component {
         table: !!table ? table : false, // if no table, move page
       }
     },
-    condition: (p) => p.moveTable || p.movePage,
+    condition: (p) => !!p.table || p.target === p.listener,
     preventDefault: true,
     onInit: (p) => this.props.changeMode(!!p.table ? MODE.moveTable : MODE.movePage),
-    onMove: (p, d) => {
-      if (!!p.table){
-        return this.handleMoveTables([p.table.index], d)
-      } else  {
-        return this.handleMovePage(d)
-      }
-    },
-    onQuit: () => this.props.changeMode(MODE.move),
+    onMove: ({payload, offset, delta}) => !!payload.table
+      ? this.handleMovingTables([payload.table.node], offset)
+      : this.handleMovePage(delta),
+    onQuit: ({payload, offset}) => !!payload.table
+      ? this.handleMoveTables([payload.table.index], offset)
+      : this.props.changeMode(MODE.move),
   })
 
   handleMovePage(d){
     window.scrollBy(-d.x, -d.y, {behavior: 'smooth'})
   }
-  handleMoveTables(indexes, d){
-    this.props.moveTables(this.props.app.workingspace, indexes, d)
+  handleMovingTables(nodes, offset){
+    // apply transforms to reduce state change frequency
+    nodes.forEach(n => {
+      n.style.transform = `translate(${offset.x}px, ${offset.y}px)`
+    })
+  }
+  handleMoveTables(indexes, offset){
+    // reset transforms from this.handleMovingTables()
+    [...document.querySelectorAll('g.Table')].forEach(n => {
+      n.style.transform = 'none'
+    })
+    this.props.moveTables(this.props.app.workingspace, indexes, offset)
   }
 
   handleCreating(e){
@@ -219,7 +228,15 @@ const mapDispatchToProps = dispatch => ({
   changeMode: (mode) => dispatch(changeMode(mode)),
   creatingTable: (coords) => dispatch(creatingTable(coords)),
   createTable: (workspace, name, coords) => dispatch(createTable(workspace, name, coords)),
-  moveTables: (workspace, indexes, delta) => dispatch(moveTables(workspace, indexes, delta)),
+  moveTables: (workspace, indexes, offset) => {
+    console.log({
+      workspace,
+      indexes,
+      offset,
+    })
+    dispatch(moveTables(workspace, indexes, offset))
+    dispatch(changeMode(MODE.move))
+  }
 })
 
 export default connect(
