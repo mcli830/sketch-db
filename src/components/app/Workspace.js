@@ -229,11 +229,6 @@ const mapDispatchToProps = dispatch => ({
   creatingTable: (coords) => dispatch(creatingTable(coords)),
   createTable: (workspace, name, coords) => dispatch(createTable(workspace, name, coords)),
   moveTables: (workspace, indexes, offset) => {
-    console.log({
-      workspace,
-      indexes,
-      offset,
-    })
     dispatch(moveTables(workspace, indexes, offset))
     dispatch(changeMode(MODE.move))
   }
