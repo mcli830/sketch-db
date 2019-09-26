@@ -23,7 +23,6 @@ export default function(state = [
   }
 
   function moveTables(){
-    console.log(action.payload)
     const { workspace, indexes, offset } = action.payload
     const nextState = [...state]
     nextState[workspace].tables.forEach((t,i) => {
