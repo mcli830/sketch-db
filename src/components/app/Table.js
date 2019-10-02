@@ -9,8 +9,8 @@ const c = TABLE_DIM
 
 const Rect = styled.rect`
   fill: ${({theme}) => theme.bg[3]};
-  stroke: ${({theme}) => theme.bg[8]}
-  stroke-width: 1;
+  stroke: ${({theme, selected}) => selected ? theme.primary[5] : theme.bg[8]};
+  stroke-width: ${({selected}) => selected ? 3 : 1};
 `
 const Centered = styled.text`
   text-anchor: middle;
@@ -26,18 +26,19 @@ const Field = styled(Centered)`
   font-size: ${TABLE_DIM.field.fontSize};
 `
 
-function Table({theme, name, index, coords, fields, filter}){
+function Table({theme, name, index, coords, fields, selected, filter}){
 
   const tableHeight = c.name.lineHeight + c.field.lineHeight*fields.length + c.padding*2;
   const center = coords.x + c.width*0.5;
   const calcFieldYMid = n => {
     return coords.y + c.padding + c.name.lineHeight + c.field.lineHeight*n - c.field.lineHeight*0.5;
   }
-
+  
   return (
-    <g data-table={name} data-index={index} className='Table'>
+    <g data-table={name} data-index={index} data-selected={selected} className='Table'>
       <Rect
         theme={theme}
+        selected={selected}
         x={coords.x}
         y={coords.y}
         width={c.width}

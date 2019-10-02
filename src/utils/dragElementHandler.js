@@ -9,6 +9,7 @@ export default (options = {}) => {
 
   const payloadIsFunction = typeof options.payload === 'function'
   const condition = options.condition || false
+  const onAbort = options.onAbort || false
   const prevent = options.preventDefault || false
   const onInit = options.onInit || false
   const onMove = options.onMove || false
@@ -18,7 +19,9 @@ export default (options = {}) => {
 
     const payload = payloadIsFunction ? options.payload(e) : (options.payload || null)
 
-    if (!condition(payload)) return null
+    if (!condition(payload)) {
+      return onAbort ? onAbort(payload) : false;
+    }
     if (prevent) e.preventDefault()
 
     const origin =  {

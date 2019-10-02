@@ -9,8 +9,9 @@ import FloatingInput from './FloatingInput'
 // util
 import dragElementHandler from '../../utils/dragElementHandler'
 import getTableData from '../../utils/getTableData'
+import mapSelectionData from '../../utils/mapSelectionData'
 // actions
-import { changeMode, creatingTable } from '../../state/actions/app'
+import { changeMode, creatingTable, newSelection } from '../../state/actions/app'
 import { createTable, moveTables } from '../../state/actions/data'
 // constants
 import { UNIT, THEME, TEXT_PADDING, BOX_SHADOW } from '../../vars/theme'
@@ -34,8 +35,7 @@ const Svg = styled.svg.attrs(props => ({
     switch(mode){
       case MODE.move:
         return 'grab';
-      case MODE.movePage:
-      case MODE.moveTable:
+      case MODE.moving:
         return 'grabbing';
       case MODE.create:
         return 'cell';
@@ -110,14 +110,26 @@ class Workspace extends React.Component {
     payload: (e) => {
       const table = getTableData(e.target)
       return {
+        meta: {
+          time: new Date(),
+          keydown: {
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+            shift: e.shiftKey,
+          },
+        },
         listener: e.currentTarget,
         target: e.target,
         table: !!table ? table : false, // if no table, move page
       }
     },
-    condition: (p) => !!p.table || p.target === p.listener,
+    condition: (p) => (!!p.table && p.table.selected) || p.target === p.listener,
+    onAbort: (p) => {
+      console.log(p.table)
+      if (!!p.table) this.props.newSelection([p.table.index])
+    },
     preventDefault: true,
-    onInit: (p) => this.props.changeMode(!!p.table ? MODE.moveTable : MODE.movePage),
+    onInit: (p) => this.props.changeMode(MODE.moving),
     onMove: ({payload, offset, delta}) => !!payload.table
       ? this.handleMovingTables([payload.table.node], offset)
       : this.handleMovePage(delta),
@@ -164,6 +176,10 @@ class Workspace extends React.Component {
     });
     this.props.changeMode(MODE.create)
   }
+  // handleNewSelection(indexes){
+  //   this.props.newSelection()
+  //   this.props.changeMode(!!p.table ? MODE.moveTable : MODE.movePage)
+  // }
 
   // render
   render() {
@@ -198,6 +214,7 @@ class Workspace extends React.Component {
                 coords={t.coords}
                 name={t.name}
                 fields={t.fields}
+                selected={t.selected}
                 filter={idDropShadow}
                 theme={theme}
               />
@@ -221,7 +238,7 @@ class Workspace extends React.Component {
 const mapStateToProps = state => ({
   app: state.app,
   theme: THEME[state.app.theme],
-  data: state.data,
+  data: mapSelectionData(state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -231,7 +248,8 @@ const mapDispatchToProps = dispatch => ({
   moveTables: (workspace, indexes, offset) => {
     dispatch(moveTables(workspace, indexes, offset))
     dispatch(changeMode(MODE.move))
-  }
+  },
+  newSelection: (indexes) => dispatch(newSelection(indexes)),
 })
 
 export default connect(

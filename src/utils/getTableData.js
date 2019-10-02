@@ -6,6 +6,7 @@ export default function getTableData(t){
   ) ? {
     name: p.dataset.table,
     index: parseInt(p.dataset.index, 10),
+    selected: p.dataset.selected,
     node: p,
   } : null
 }

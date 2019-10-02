@@ -158,7 +158,7 @@ const ControlPanel = ({ theme, themeName, mode, changeMode, changeTheme }) => {
       type: 'action',
       mode: MODE.move,
       icon: 'fas fa-hand-paper',
-      active: [MODE.move, MODE.movePage, MODE.moveTable].includes(mode),
+      active: [MODE.move, MODE.moving].includes(mode),
       activeColor: theme.primary[5],
       onClick: ()=>changeMode(MODE.move),
       disabled: false,

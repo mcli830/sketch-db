@@ -21,3 +21,11 @@ export function creatingTable(coords) {
     payload: coords
   }
 }
+
+export const NEW_SELECTION = 'NEW_SELECTION'
+export function selectNew(indexes) {
+  return {
+    type: NEW_SELECTION,
+    payload: indexes,
+  }
+}
