@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const DropShadow = ({id, dx, dy, stdDeviation, color, opacity }) => (
-  <filter id={id}>
+  <filter id={id} x='-40%' y='-40%' width='180%' height='180%'>
     <feDropShadow in='SourceGraphic' dx={dx} dy={dy} stdDeviation={stdDeviation} floodColor={color} floodOpacity={opacity} />
   </filter>
 )

@@ -200,11 +200,11 @@ class Workspace extends React.Component {
             <defs>
               <DropShadow
                 id={idDropShadow}
-                color={BOX_SHADOW.md.color}
-                opacity={BOX_SHADOW.md.alpha}
-                dx={BOX_SHADOW.md.delta}
-                dy={BOX_SHADOW.md.delta}
-                stdDeviation={BOX_SHADOW.md.stdDev}
+                color={BOX_SHADOW.lg.color}
+                opacity={BOX_SHADOW.lg.alpha}
+                dx={BOX_SHADOW.lg.delta}
+                dy={BOX_SHADOW.lg.delta}
+                stdDeviation={BOX_SHADOW.lg.stdDev}
               />
             </defs>
             {workspace.tables.map((t,i) => (
